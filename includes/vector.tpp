@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.hpp                                         :+:      :+:    :+:   */
+/*   vector.tpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/06/30 16:31:02 by tlafay           ###   ########.fr       */
+/*   Created: 2022/06/30 15:03:32 by tlafay            #+#    #+#             */
+/*   Updated: 2022/06/30 15:10:40 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTOR_HPP
-# define VECTOR_HPP
-
-#include "test.hpp"
+#include "vector.hpp"
 
 template <typename T>
-class ft::vector
+ft::vector<T>::vector()
 {
-	public:
-		vector();
-		vector(const vector &f);
-		~vector();
+}
 
-		void	operator=(const vector &f);
+template <typename T>
+ft::vector<T>::vector(const ft::vector<T> &f)
+{
+	*this = f;
+}
 
-	private:
-		T	*array;
-		
-};
+template <typename T>
+ft::vector<T>::~vector()
+{
+}
 
-#include "vector.tpp"
-
-#endif
+template <typename T>
+void	ft::vector<T>::operator=(const ft::vector<T> &f)
+{
+	(void)f;
+}

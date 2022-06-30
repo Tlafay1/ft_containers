@@ -10,7 +10,7 @@ OBJS := ${SRCS:.cpp=.o}
 
 OBJDIR := $(addprefix obj/, $(OBJS))
 
-INCLUDES := vector.hpp
+INCLUDES := vector.hpp vector.tpp
 
 INCDIR := $(addprefix includes/, $(INCLUDES))
 
