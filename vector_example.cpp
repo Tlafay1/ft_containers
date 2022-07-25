@@ -1,49 +1,52 @@
+#include <iostream>
+
 namespace nonstd
 {
 
 	template<typename T>
 	class vector
 	{
-	public:
-		using	iterator = T * ;
-		using	const_iterator = const T*;
+		public:
+			using	iterator = T * ;
+			using	const_iterator = const T*;
 
-		vector();
-		explicit vector(const size_t count);
-		vector(const size_t count, const T& val);
-		vector(const vector& other);
-		vector(vector&& other);
-		~vector();
+			vector();
+			explicit vector(const std::size_t count);
+			vector(const std::size_t count, const T& val);
+			vector(const vector& other);
+			vector(vector&& other);
+			~vector();
 
-		vector&	operator=(const vector& other);
-		vector&	operator=(vector&& other);
+			vector&	operator=(const vector& other);
+			vector&	operator=(vector&& other);
 
-		size_t	size() const;
-		size_t	capacity() const;
+			std::size_t	size() const;
+			std::size_t	capacity() const;
 
-		void	push_back(const T& val);
-		void	push_back(T&& val);
-		void	pop_back();
+			void	push_back(const T& val);
+			void	push_back(T&& val);
+			void	pop_back();
 
-		T& 			front();
-		T& 			back();
-		T& 			operator[](const size_t pos);
-		const T&	front() const;
-		const T&	back() const;
-		const T&	operator[](const size_t pos) const;
+			T& 			front();
+			T& 			back();
+			T& 			operator[](const std::size_t pos);
+			const T&	front() const;
+			const T&	back() const;
+			const T&	operator[](const std::size_t pos) const;
 
-		iterator		begin();
-		const_iterator	begin() const;
-		iterator		end();
-		const_iterator	end() const;
-	private:
-		T			*buffer;
-		iterator	m_first;
-		iterator	m_last;
-		iterator	m_end;
+			iterator		begin();
+			const_iterator	begin() const;
+			iterator		end();
+			const_iterator	end() const;
+		
+		private:
+			T			*buffer;
+			iterator	m_first;
+			iterator	m_last;
+			iterator	m_end;
 
-		void	realloc(const size_t factor, const size_t carry);
-		void	alloc(const size_t cap);
+			void	realloc(const std::size_t factor, const std::size_t carry);
+			void	alloc(const std::size_t cap);
 	};
 
 	template<typename T>
@@ -53,13 +56,13 @@ namespace nonstd
 	}
 
 	template<typename T>
-	vector<T>::vector(const size_t count) : buffer(new T[count]), m_first(buffer), m_last(buffer + count), m_end(buffer + count)
+	vector<T>::vector(const std::size_t count) : buffer(new T[count]), m_first(buffer), m_last(buffer + count), m_end(buffer + count)
 	{
 
 	}
 
 	template<typename T>
-	vector<T>::vector(const size_t count, const T& val) : buffer(new T[count]), m_first(buffer), m_last(buffer + count), m_end(buffer + count)
+	vector<T>::vector(const std::size_t count, const T& val) : buffer(new T[count]), m_first(buffer), m_last(buffer + count), m_end(buffer + count)
 	{
 		while (count--)
 		{
@@ -70,7 +73,7 @@ namespace nonstd
 	template<typename T>
 	vector<T>::vector(const vector& other) : buffer(new T[other.capacity()]), m_first(buffer), m_last(buffer + other.size()), m_end(buffer + other.capacity())
 	{
-		for (size_t i = 0; i < size(); ++i)
+		for (std::size_t i = 0; i < size(); ++i)
 		{
 			buffer[i] = other[i];
 		}
@@ -105,7 +108,7 @@ namespace nonstd
 		m_first = buffer;
 		m_last = buffer + other.size();
 		m_end = buffer + other.capacity();
-		for (size_t i = 0; i < size(); ++i)
+		for (std::size_t i = 0; i < size(); ++i)
 		{
 			buffer[i] = other[i];
 		}
@@ -132,15 +135,15 @@ namespace nonstd
 	}
 
 	template<typename T>
-	size_t	vector<T>::size() const
+	std::size_t	vector<T>::size() const
 	{
-		return static_cast<size_t>(m_last - m_first);
+		return static_cast<std::size_t>(m_last - m_first);
 	}
 
 	template<typename T>
-	size_t	vector<T>::capacity() const
+	std::size_t	vector<T>::capacity() const
 	{
-		return static_cast<size_t>(m_end - m_first);
+		return static_cast<std::size_t>(m_end - m_first);
 	}
 
 	template<typename T>
@@ -218,7 +221,7 @@ namespace nonstd
 	}
 
 	template<typename T>
-	T&	vector<T>::operator[](const size_t pos)
+	T&	vector<T>::operator[](const std::size_t pos)
 	{
 		if (pos >= size())
 		{
@@ -228,7 +231,7 @@ namespace nonstd
 	}
 
 	template<typename T>
-	const T&	vector<T>::operator[](const size_t pos) const
+	const T&	vector<T>::operator[](const std::size_t pos) const
 	{
 		if (pos >= size())
 		{
@@ -262,17 +265,17 @@ namespace nonstd
 	}
 
 	template<typename T>
-	void	vector<T>::realloc(const size_t factor, const size_t carry)
+	void	vector<T>::realloc(const std::size_t factor, const std::size_t carry)
 	{
 		alloc(capacity() * factor + carry);
 	}
 
 	template<typename T>
-	void	vector<T>::alloc(const size_t cap)
+	void	vector<T>::alloc(const std::size_t cap)
 	{
 		T* new_buffer = new T[cap];
-		size_t sz = size();
-		for (size_t i = 0; i < sz; ++i)
+		std::size_t sz = size();
+		for (std::size_t i = 0; i < sz; ++i)
 		{
 			new_buffer[i] = buffer[i];
 		}

@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/06/30 16:31:02 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/07/25 13:32:01 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ class ft::vector
 {
 	public:
 		vector();
-		vector(const vector &f);
+		vector(std::size_t n, const T& value = T());
+		vector(const vector &other);
 		~vector();
 
-		void	operator=(const vector &f);
+		void	operator=(const vector &other);
 
 	private:
 		T	*array;
-		
 };
 
 #include "vector.tpp"
