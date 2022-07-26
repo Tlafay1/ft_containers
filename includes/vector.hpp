@@ -3,32 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
+/*   By: timothee <timothee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/07/25 13:32:01 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/07/26 12:37:56 by timothee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-#include "test.hpp"
+// #include <memory>
 
-template <typename T>
-class ft::vector
+namespace ft
 {
-	public:
-		vector();
-		vector(std::size_t n, const T& value = T());
-		vector(const vector &other);
-		~vector();
+	template <typename T, typename Alloc = std::allocator<T> >
+	class vector
+	{
+		public:
+			vector(const Alloc &alloc = Alloc());
+			vector(std::size_t n, const T& value = T(), const Alloc &alloc = Alloc());
+			vector(const vector &other);
+			~vector();
 
-		void	operator=(const vector &other);
+			void	operator=(const vector &other);
 
-	private:
-		T	*array;
-};
+		private:
+			Alloc	array;
+			T		*_start;
+			T		*_end;
+	};
+}
 
 #include "vector.tpp"
 

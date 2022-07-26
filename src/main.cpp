@@ -13,13 +13,12 @@
 #include <iostream>
 #include <vector>
 
-#include "test.hpp"
 #include "vector.hpp"
 
 int main(void)
 {
 	std::cout << "Hello World" << std::endl;
 	ft::vector<int> a;
-	std::vector<char> v;
+	ft::vector<int> v(10, 10);
 	return 0;
 }
