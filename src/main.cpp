@@ -17,7 +17,6 @@
 
 int main(void)
 {
-	std::cout << "Hello World" << std::endl;
 	ft::vector<int> a;
 	ft::vector<int> v(5, 10);
 	std::cout << *v.begin() << std::endl;

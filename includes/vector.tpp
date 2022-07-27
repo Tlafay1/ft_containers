@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.tpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
+/*   By: timothee <timothee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:03:32 by tlafay            #+#    #+#             */
-/*   Updated: 2022/07/27 11:31:39 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/07/27 16:00:21 by timothee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 template <typename T, typename Alloc>
 ft::vector<T, Alloc>::vector(const Alloc &alloc):
 	_array(alloc),
+	_start(NULL),
+	_end(NULL),
 	_num(0)
 {
 
@@ -82,9 +84,7 @@ void		ft::vector<T, Alloc>::push_back (const value_type& val)
 		_array.deallocate(_start, _num / 2);
 		_start = tmp;
 	}
-
 	*_end++ = val;
-	// _end++;
 }
 
 template <typename T, typename Alloc>
