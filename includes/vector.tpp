@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.tpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: timothee <timothee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:03:32 by tlafay            #+#    #+#             */
-/*   Updated: 2022/07/26 12:35:14 by timothee         ###   ########.fr       */
+/*   Updated: 2022/07/27 11:31:39 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 
 template <typename T, typename Alloc>
 ft::vector<T, Alloc>::vector(const Alloc &alloc):
-	array(alloc)
+	_array(alloc),
+	_num(0)
 {
 
 }
 
 template <typename T, typename Alloc>
 ft::vector<T, Alloc>::vector(std::size_t n, const T& value, const Alloc &alloc):
-	array(alloc)
+	_array(alloc),
+	_num(n)
 {
-	_start = array.allocate(n);
+	_start = _array.allocate(_num);
 	_end = _start;
 	while (n--)
 	{
-		array.construct(_end, value);
+		_array.construct(_end, value);
 		_end++;
 	}
-	for (; _start != _end; _start++ )
-		std::cout << *_start << std::endl;
 }
 
 template <typename T, typename Alloc>
@@ -43,6 +43,48 @@ ft::vector<T, Alloc>::vector(const ft::vector<T, Alloc> &other)
 template <typename T, typename Alloc>
 ft::vector<T, Alloc>::~vector()
 {
+	T	*tmp = _start;
+
+	for (; tmp != _end; tmp++)
+		_array.destroy(tmp);
+	_array.deallocate(_start, _num);
+}
+
+template <typename T, typename Alloc>
+T	*ft::vector<T, Alloc>::begin()
+{
+	return	_start;
+}
+
+template <typename T, typename Alloc>
+T	*ft::vector<T, Alloc>::end()
+{
+	return	_end;
+}
+
+template <typename T, typename Alloc>
+void		ft::vector<T, Alloc>::push_back (const value_type& val)
+{
+	/** TO REMOVE **/
+	std::size_t	diff = 0;
+	T	*tmp = _start;
+
+	for (; tmp != _end; ++tmp, ++diff);
+	/** END TO REMOVE **/
+	
+	if (_num == diff)
+	{
+		_num *= 2;
+		tmp = _array.allocate(_num);
+		_end = tmp;
+		for (std::size_t i = 0; i < _num; i++, _end++)
+			*_end = *_start + i;
+		_array.deallocate(_start, _num / 2);
+		_start = tmp;
+	}
+
+	*_end++ = val;
+	// _end++;
 }
 
 template <typename T, typename Alloc>
