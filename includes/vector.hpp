@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/07/28 16:54:51 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/07/28 17:31:28 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ namespace ft
 			value_type	*_array;
 			size_type	_size;
 			size_type	_capacity;
+
+			void	expand(size_type n);
 	};
 }
 

@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:03:32 by tlafay            #+#    #+#             */
-/*   Updated: 2022/07/28 17:13:32 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/07/28 17:30:57 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,18 +111,36 @@ void	ft::vector<T, Alloc>::reserve(size_type n)
 }
 
 template <typename T, typename Alloc>
+void	ft::vector<T, Alloc>::expand(size_type n)
+{
+	size_t	new_capacity;
+	
+	if (!_capacity)
+		new_capacity = 1;
+	else if (_capacity < SIZE_MAX)
+		new_capacity = 2 * _capacity;
+	else
+		new_capacity = SIZE_MAX;
+}
+
+template <typename T, typename Alloc>
 void	ft::vector<T, Alloc>::resize(size_type n)
 {
+	(void)n;
 	if (n < _size)
 	{
 		for (iterator it = _array + n; it != _array + _size; it++)
 			_alloc.destroy(it);
 		_size = n;
 	}
-	// else if (n > _size)
-	// {
-	// 	if 
-	// }
+	else if (n > _size)
+	{
+		if (n > _capacity)
+		{
+			expand(n);
+		}
+	}
+	std::cout << SIZE_MAX << std::endl;
 }
 
 template <typename T, typename Alloc>
