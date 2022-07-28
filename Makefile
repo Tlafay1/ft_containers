@@ -2,7 +2,7 @@ CC = c++
 
 NAME := ft_containers
 
-CPPFLAGS := -Wall -Wextra -Werror -std=c++98
+CPPFLAGS := -Wall -Wextra -Werror --std=c++98
 
 SRCS := main.cpp
 

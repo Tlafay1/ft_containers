@@ -10,9 +10,8 @@ namespace nonstd
 			using	iterator = T * ;
 			using	const_iterator = const T*;
 
-			vector();
-			explicit vector(const std::size_t count);
-			vector(const std::size_t count, const T& val);
+			explicit vector();
+			explicit vector(const std::size_t count, const T& val);
 			vector(const vector& other);
 			vector(vector&& other);
 			~vector();

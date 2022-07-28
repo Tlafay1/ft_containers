@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.tpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: timothee <timothee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:03:32 by tlafay            #+#    #+#             */
-/*   Updated: 2022/07/27 16:00:21 by timothee         ###   ########.fr       */
+/*   Updated: 2022/07/28 13:49:03 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,37 @@
 
 template <typename T, typename Alloc>
 ft::vector<T, Alloc>::vector(const Alloc &alloc):
-	_array(alloc),
-	_start(NULL),
-	_end(NULL),
-	_num(0)
+	_alloc(alloc),
+	_array(NULL),
+	_size(0),
+	_capacity(0)
 {
 
 }
 
 template <typename T, typename Alloc>
-ft::vector<T, Alloc>::vector(std::size_t n, const T& value, const Alloc &alloc):
-	_array(alloc),
-	_num(n)
+ft::vector<T, Alloc>::vector(std::size_t n, const Alloc &alloc):
+	_alloc(alloc),
+	_size(n),
+	_capacity(n)
 {
-	_start = _array.allocate(_num);
-	_end = _start;
-	while (n--)
+	_array = _alloc.allocate(n);
+	for (iterator it = _array; it != _array + _size; ++it)
 	{
-		_array.construct(_end, value);
-		_end++;
+		_alloc.construct(it);
+	}
+}
+
+template <typename T, typename Alloc>
+ft::vector<T, Alloc>::vector(std::size_t n, const T& value, const Alloc &alloc):
+	_alloc(alloc),
+	_size(n),
+	_capacity(n)
+{
+	_array = _alloc.allocate(n);
+	for (iterator it = _array; it != _array + _size; ++it)
+	{
+		_alloc.construct(it, value());
 	}
 }
 
@@ -45,46 +57,63 @@ ft::vector<T, Alloc>::vector(const ft::vector<T, Alloc> &other)
 template <typename T, typename Alloc>
 ft::vector<T, Alloc>::~vector()
 {
-	T	*tmp = _start;
+	if (!_array)
+		return;
 
-	for (; tmp != _end; tmp++)
-		_array.destroy(tmp);
-	_array.deallocate(_start, _num);
+	T	*tmp = _array;
+	for (; tmp != _array + _size; tmp++)
+		_alloc.destroy(tmp);
+	_alloc.deallocate(_array, _capacity);
 }
 
 template <typename T, typename Alloc>
 T	*ft::vector<T, Alloc>::begin()
 {
-	return	_start;
+	return	_array;
 }
 
 template <typename T, typename Alloc>
 T	*ft::vector<T, Alloc>::end()
 {
-	return	_end;
+	return	_array + _size;
 }
 
 template <typename T, typename Alloc>
-void		ft::vector<T, Alloc>::push_back (const value_type& val)
+std::size_t	ft::vector<T, Alloc>::capacity()
 {
-	/** TO REMOVE **/
-	std::size_t	diff = 0;
-	T	*tmp = _start;
+	return (_capacity);
+}
 
-	for (; tmp != _end; ++tmp, ++diff);
-	/** END TO REMOVE **/
+template <typename T, typename Alloc>
+void	ft::vector<T, Alloc>::reserve(std::size_t n)
+{
+	if (n <= _capacity)
+		return ;
 	
-	if (_num == diff)
+	std::size_t	new_capacity = n;
+	std::size_t	new_size = _size;
+	T			*new_array = _alloc.allocate(n);
+
+	for (std::size_t i = 0; i < _size; ++i)
 	{
-		_num *= 2;
-		tmp = _array.allocate(_num);
-		_end = tmp;
-		for (std::size_t i = 0; i < _num; i++, _end++)
-			*_end = *_start + i;
-		_array.deallocate(_start, _num / 2);
-		_start = tmp;
+		_alloc.construct(new_array + i, _array[i]);
 	}
-	*_end++ = val;
+
+	std::swap(new_capacity, _capacity);
+	std::swap(new_size, _size);
+	std::swap(new_array, _array);
+
+	for (std::size_t i = 0; i < new_size; ++i)
+	{
+		_alloc.destroy(new_array + i);
+	}
+	_alloc.deallocate(new_array, new_capacity);
+}
+
+template <typename T, typename Alloc>
+void	ft::vector<T, Alloc>::push_back (const value_type& val)
+{
+	(void)val;
 }
 
 template <typename T, typename Alloc>

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: timothee <timothee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/07/27 16:23:48 by timothee         ###   ########.fr       */
+/*   Updated: 2022/07/28 13:48:59 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,17 @@
 
 namespace ft
 {
-	template <typename T, typename Alloc = std::allocator<T> >
+	template < typename T, typename Alloc = std::allocator<T> >
 	class vector
 	{
 		public:
 			typedef T			value_type;
-			typedef value_type* iterator;
+			typedef T*			iterator;
+			typedef const T*	const_iterator;
 
-			vector(const Alloc &alloc = Alloc());
-			vector(std::size_t n, const value_type& value = value_type(),
+			explicit vector(const Alloc &alloc = Alloc());
+			explicit vector(std::size_t n, const Alloc &alloc = Alloc());
+			explicit vector(std::size_t n, const T& value,
 				const Alloc &alloc = Alloc());
 			vector(const vector &other);
 			~vector();
@@ -33,14 +35,16 @@ namespace ft
 			iterator	begin();
 			iterator	end();
 			void		push_back(const value_type& val);
+			void		reserve(std::size_t n);
+			std::size_t	capacity();
 
 			void	operator=(const vector &other);
 
 		private:
-			Alloc		_array;
-			value_type	*_start;
-			value_type	*_end;
-			std::size_t	_num;
+			Alloc		_alloc;
+			value_type	*_array;
+			std::size_t	_size;
+			std::size_t	_capacity;
 	};
 }
 
