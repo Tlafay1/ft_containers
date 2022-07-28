@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 16:59:54 by tlafay            #+#    #+#             */
-/*   Updated: 2022/07/28 12:59:15 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/07/28 16:24:15 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,10 @@ class Test
 
 int main(void)
 {
-	// std::allocator<std::string> myAllocator;
-
-	// std::string* arr = myAllocator.allocate(5);
-
-	// for (int i = 0; i < 5; ++i)
-	// {
-	// 	myAllocator.construct(arr + i, "Test()");
-	// }
-
-	// for (int i = 0; i < 5; ++i)
-	// {
-	// 	myAllocator.destroy(arr + i);
-	// }
-	// myAllocator.deallocate(arr, 5);
-	ft::vector<Test> test(5);
+	ft::vector<int> test(100);
+	// std::cout << test.capacity() << std::endl;
+	std::cout << test.size() << std::endl;
+	test.resize(10);
+	std::cout << test.size() << std::endl;
 	return 0;
 }

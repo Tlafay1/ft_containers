@@ -1,287 +1,260 @@
 #include <iostream>
+#include <stdexcept>
 
-namespace nonstd
-{
+template<class T> class WVector {
+public:
 
-	template<typename T>
-	class vector
-	{
-		public:
-			using	iterator = T * ;
-			using	const_iterator = const T*;
+	typedef T value_type;
+	typedef T* iterator;
+	typedef const T* const_iterator;
 
-			explicit vector();
-			explicit vector(const std::size_t count, const T& val);
-			vector(const vector& other);
-			vector(vector&& other);
-			~vector();
+	size_t size() const;
 
-			vector&	operator=(const vector& other);
-			vector&	operator=(vector&& other);
+	T& operator[] (size_t index);
+	const T& operator[] (size_t index) const;
 
-			std::size_t	size() const;
-			std::size_t	capacity() const;
+	T& at(size_t index);
+	const T& at(size_t index) const;
 
-			void	push_back(const T& val);
-			void	push_back(T&& val);
-			void	pop_back();
+	void push_back(const T& element);
 
-			T& 			front();
-			T& 			back();
-			T& 			operator[](const std::size_t pos);
-			const T&	front() const;
-			const T&	back() const;
-			const T&	operator[](const std::size_t pos) const;
+	void resize(size_t new_size);
+	void resize(size_t new_size, const value_type& val);
+	void reserve(size_t n);
 
-			iterator		begin();
-			const_iterator	begin() const;
-			iterator		end();
-			const_iterator	end() const;
-		
-		private:
-			T			*buffer;
-			iterator	m_first;
-			iterator	m_last;
-			iterator	m_end;
+	iterator begin();
+	const_iterator begin() const;
+	iterator end();
+	const_iterator end() const;
 
-			void	realloc(const std::size_t factor, const std::size_t carry);
-			void	alloc(const std::size_t cap);
-	};
+	WVector();
+	WVector(size_t n);
+	WVector(size_t n, const value_type& val);
+	WVector(const WVector& x);
+	WVector(WVector&& x);
 
-	template<typename T>
-	vector<T>::vector() : buffer(new T[10]), m_first(buffer), m_last(buffer), m_end(buffer + 10)
-	{
+	~WVector();
 
+    //This form of the function provides both copy- and move-assignment
+    //https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
+    //http://en.cppreference.com/w/cpp/language/operators#Assignment_operator
+	WVector& operator= (WVector x);
+
+    //see https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
+    //and https://stackoverflow.com/questions/5695548/public-friend-swap-member-function
+	friend void swap(WVector& first, WVector& second) {
+		using std::swap;
+
+		swap(first.size_, second.size_);
+		swap(first.capacity_, second.capacity_);
+		swap(first.data_, second.data_);
 	}
 
-	template<typename T>
-	vector<T>::vector(const std::size_t count) : buffer(new T[count]), m_first(buffer), m_last(buffer + count), m_end(buffer + count)
-	{
+private:
+	size_t size_;
+	size_t capacity_;
+	T* data_;
+	std::allocator<T> alloc_;
 
+	void resize_smaller(size_t new_size);
+	void expand_capacity(size_t new_size);
+};
+
+template<class T>
+size_t WVector<T>::size() const {
+	return size_;
+}
+
+template<class T>
+T& WVector<T>::operator[] (size_t index) {
+	return data_[index];
+}
+
+template<class T>
+const T& WVector<T>::operator[] (size_t index) const {
+	return data_[index];
+}
+
+template<class T>
+T& WVector<T>::at(size_t index) {
+	if (index >= size_) throw std::out_of_range("index too big");
+	return data_[index];
+}
+
+template<class T>
+const T& WVector<T>::at(size_t index) const {
+	if (index >= size_) throw std::out_of_range("index too big");
+	return data_[index];
+}
+
+template<class T>
+void WVector<T>::push_back(const T& element) {
+	resize(size_+1,element);
+}
+
+template<class T>
+void WVector<T>::resize_smaller(size_t new_size) {
+	for (iterator it = data_ + new_size; it != data_ + size_; ++it) {
+		alloc_.destroy(it);
+	}
+	size_ = new_size;
+}
+
+template<class T>
+void WVector<T>::expand_capacity(size_t new_size) {
+	size_t new_capacity;
+	if (capacity_ == 0) {
+		new_capacity = 1;
+	} else if (capacity_ < SIZE_MAX/2) {
+		new_capacity = capacity_*2;
+	} else {
+		new_capacity = SIZE_MAX;
 	}
 
-	template<typename T>
-	vector<T>::vector(const std::size_t count, const T& val) : buffer(new T[count]), m_first(buffer), m_last(buffer + count), m_end(buffer + count)
-	{
-		while (count--)
-		{
-			buffer[count] = val;
-		}
+	if (new_size > new_capacity) new_capacity = new_size;
+
+	reserve(new_capacity);
+}
+
+template<class T>
+void WVector<T>::resize(size_t new_size) {
+	if (size_ == new_size) return;
+	if (new_size < size_) {
+		resize_smaller(new_size);
+		return;
+	}
+	if (new_size > capacity_) {
+		expand_capacity(new_size);
 	}
 
-	template<typename T>
-	vector<T>::vector(const vector& other) : buffer(new T[other.capacity()]), m_first(buffer), m_last(buffer + other.size()), m_end(buffer + other.capacity())
-	{
-		for (std::size_t i = 0; i < size(); ++i)
-		{
-			buffer[i] = other[i];
-		}
+	for (iterator it = data_ + size_; it != data_ + new_size; ++it) {
+		alloc_.construct(it);
+	}
+	size_ = new_size;
+}
+
+template<class T>
+void WVector<T>::resize(size_t new_size, const value_type& val) {
+	if (size_ == new_size) return;
+	if (new_size < size_) {
+		resize_smaller(new_size);
+		return;
+	}
+	if (new_size > capacity_) {
+		expand_capacity(new_size);
 	}
 
-	template<typename T>
-	vector<T>::vector(vector&& other) : buffer(other.buffer), m_first(other.m_first), m_last(other.m_last), m_end(other.m_end)
-	{
-		other.buffer = nullptr;
-		other.m_first = other.m_last = other.m_end = nullptr;
+	for (iterator it = data_ + size_; it != data_ + new_size; ++it) {
+		alloc_.construct(it,val);
+	}
+	size_ = new_size;
+}
+
+template<class T>
+void WVector<T>::reserve(size_t n) {
+	if (n <= capacity_) {
+		return;
 	}
 
-	template<typename T>
-	vector<T>::~vector()
-	{
-		if (buffer != nullptr)
-		{
-			m_first = m_last = m_end = nullptr;
-			delete[] buffer;
-		}
+	T* old_data = data_;
+	size_t old_capacity = capacity_;
+
+	data_ = alloc_.allocate(n);
+	capacity_ = n;
+	for (size_t i=0; i<size_; i++) {
+		alloc_.construct(data_ + i, old_data[i]);
 	}
 
-	template<typename T>
-	vector<T>& vector<T>::operator=(const vector<T>& other)
-	{
-		if (this == &other)
-		{
-			return *this;
-		}
-		this->~vector();
-		buffer = new T[other.capacity()];
-		m_first = buffer;
-		m_last = buffer + other.size();
-		m_end = buffer + other.capacity();
-		for (std::size_t i = 0; i < size(); ++i)
-		{
-			buffer[i] = other[i];
-		}
-		return *this;
+	for (size_t i=0; i<size_; i++) {
+		alloc_.destroy(old_data + i);
 	}
+	alloc_.deallocate(old_data,old_capacity);
+}
 
-	template<typename T>
-	vector<T>& vector<T>::operator=(vector<T>&& other)
-	{
-		if (this == &other)
-		{
-			return *this;
-		}
-		this->~vector();
+template<class T>
+typename WVector<T>::iterator WVector<T>::begin() {
+	return &data_[0];
+}
 
-		buffer = other.buffer;
-		m_first = other.m_first;
-		m_last = other.m_last;
-		m_end = other.m_end;
+template<class T>
+typename WVector<T>::const_iterator WVector<T>::begin() const {
+	return &data_[0];
+}
 
-		other.buffer = nullptr;
-		other.m_first = other.m_last = other.m_end = nullptr;
-		return *this;
+template<class T>
+typename WVector<T>::iterator WVector<T>::end() {
+	return &data_[size_];
+}
+
+template<class T>
+typename WVector<T>::const_iterator WVector<T>::end() const {
+	return &data_[size_];
+}
+
+template<class T>
+WVector<T>::WVector() {
+	size_ = 0;
+	capacity_ = 0;
+	data_ = nullptr;
+}
+
+template<class T>
+WVector<T>::WVector(size_t n) {
+	size_ = n;
+	capacity_ = n;
+	data_ = alloc_.allocate(capacity_);
+	for (iterator it = data_; it != data_ + size_; ++it) {
+		alloc_.construct(it);
 	}
+}
 
-	template<typename T>
-	std::size_t	vector<T>::size() const
-	{
-		return static_cast<std::size_t>(m_last - m_first);
+template<class T>
+WVector<T>::WVector(size_t n, const value_type& val) {
+	size_ = n;
+	capacity_ = n;
+	data_ = alloc_.allocate(capacity_);
+	for (iterator it = data_; it != data_ + size_; ++it) {
+		alloc_.construct(it, val);
 	}
+}
 
-	template<typename T>
-	std::size_t	vector<T>::capacity() const
-	{
-		return static_cast<std::size_t>(m_end - m_first);
+template<class T>
+WVector<T>::WVector(const WVector& x) {
+	size_ = x.size_;
+	capacity_ = x.capacity_;
+	data_ = alloc_.allocate(capacity_);
+	for (size_t i=0; i<size_; i++) {
+		alloc_.construct(data_ + i, x.data_[i]);
 	}
+}
 
-	template<typename T>
-	void	vector<T>::push_back(const T& val)
-	{
-		if (size() < capacity())
-		{
-			*(m_last++) = val;
-			return;
-		}
-		realloc(2, 2);
-		*(m_last++) = val;
-	}
+template<class T>
+WVector<T>::WVector(WVector&& x)
+   : WVector() //initialize this via default constructor
+   {
+  swap(*this,x); //then swap the empty vector with the vector to be moved
+}
 
-	template<typename T>
-	void	vector<T>::push_back(T&& val)
-	{
-		if (size() < capacity())
-		{
-			*(m_last++) = std::move(val);
-			return;
-		}
-		realloc(2, 2);
-		*(m_last++) = std::move(val);
+template<class T>
+WVector<T>::~WVector() {
+	for (iterator it = data_; it != data_ + size_; ++it) {
+		alloc_.destroy(it);
 	}
+	alloc_.deallocate(data_,capacity_);
+}
 
-	template<typename T>
-	void	vector<T>::pop_back()
-	{
-		if (size() == 0)
-		{
-			throw std::exception("vector is empty");
-		}
-		(--m_last)->~T();
-	}
 
-	template<typename T>
-	T&	vector<T>::front()
-	{
-		if (size() == 0)
-		{
-			throw std::exception("front(): vector is empty");
-		}
-		return *begin();
-	}
+template<class T>
+WVector<T>& WVector<T>::operator=(WVector<T> x) { //x is constructed by either the copy or move constructor as appropriate
+	swap(*this, x);
+	return *this;
+} //destructor of x is called, free resources originally held by *this
 
-	template<typename T>
-	const T&	vector<T>::front() const
-	{
-		if (size() == 0)
-		{
-			throw std::exception("front(): vector is empty");
-		}
-		return *begin();
-	}
 
-	template<typename T>
-	T&	vector<T>::back()
-	{
-		if (size() == 0)
-		{
-			throw std::exception("back(): vector is empty");
-		}
-		return *(end() - 1);
+template<typename T>
+std::ostream& operator<< (std::ostream& out, const WVector<T>& vec) {
+	for (const auto &iter : vec) {
+		out << iter << ",";
 	}
-
-	template<typename T>
-	const T&	vector<T>::back() const
-	{
-		if (size() == 0)
-		{
-			throw std::exception("back(): vector is empty");
-		}
-		return *(end() - 1);
-	}
-
-	template<typename T>
-	T&	vector<T>::operator[](const std::size_t pos)
-	{
-		if (pos >= size())
-		{
-			throw std::exception("index out of range");
-		}
-		return buffer[pos];
-	}
-
-	template<typename T>
-	const T&	vector<T>::operator[](const std::size_t pos) const
-	{
-		if (pos >= size())
-		{
-			throw std::exception("index out of range");
-		}
-		return buffer[pos];
-	}
-
-	template<typename T>
-	typename vector<T>::iterator	vector<T>::begin()
-	{
-		return m_first;
-	}
-
-	template<typename T>
-	typename vector<T>::iterator	vector<T>::end()
-	{
-		return m_last;
-	}
-
-	template<typename T>
-	typename vector<T>::const_iterator	vector<T>::begin() const
-	{
-		return m_first;
-	}
-
-	template<typename T>
-	typename vector<T>::const_iterator	vector<T>::end() const
-	{
-		return m_last;
-	}
-
-	template<typename T>
-	void	vector<T>::realloc(const std::size_t factor, const std::size_t carry)
-	{
-		alloc(capacity() * factor + carry);
-	}
-
-	template<typename T>
-	void	vector<T>::alloc(const std::size_t cap)
-	{
-		T* new_buffer = new T[cap];
-		std::size_t sz = size();
-		for (std::size_t i = 0; i < sz; ++i)
-		{
-			new_buffer[i] = buffer[i];
-		}
-		this->~vector();
-		buffer = new_buffer;
-		m_first = buffer;
-		m_last = buffer + sz;
-		m_end = buffer + cap;
-	}
+	return out;
 }
