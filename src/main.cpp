@@ -25,10 +25,10 @@ class Test
 
 int main(void)
 {
-	ft::vector<int> test(100);
+	std::vector<Test> test(5, Test());
 	// std::cout << test.capacity() << std::endl;
-	std::cout << test.size() << std::endl;
-	test.resize(10);
-	std::cout << test.size() << std::endl;
+	// std::cout << test.size() << std::endl;
+	// test.resize(10);
+	// std::cout << test.size() << std::endl;
 	return 0;
 }

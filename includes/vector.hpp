@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
+/*   By: timothee <timothee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/07/28 17:31:28 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/08/02 10:27:06 by timothee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define VECTOR_HPP
 
 #include "random_access_iterator.hpp"
+
+// #include <cstdint>
+#include <stdexcept>
+#include <limits>
 
 namespace ft
 {
@@ -27,8 +31,8 @@ namespace ft
 			typedef std::size_t	size_type;
 
 			explicit vector(const Alloc &alloc = Alloc());
-			explicit vector(size_type n, const Alloc &alloc = Alloc());
-			explicit vector(size_type n, const T &value,
+			// explicit vector(size_type n, const Alloc &alloc = Alloc());
+			explicit vector(size_type n, const T &value = T(),
 				const Alloc &alloc = Alloc());
 			vector(const vector &other);
 			~vector();
@@ -40,7 +44,6 @@ namespace ft
 			size_type	capacity();
 			size_type	size();
 			size_type	max_size();
-			void		resize(size_type n);
 			void		resize(size_type n, const value_type &val);
 
 			void	operator=(const vector &other);

@@ -127,14 +127,16 @@ void WVector<T>::resize(size_t new_size) {
 		expand_capacity(new_size);
 	}
 
-	for (iterator it = data_ + size_; it != data_ + new_size; ++it) {
+	for (iterator it = data_ + size_;
+		it != data_ + new_size; ++it) {
 		alloc_.construct(it);
 	}
 	size_ = new_size;
 }
 
 template<class T>
-void WVector<T>::resize(size_t new_size, const value_type& val) {
+void WVector<T>::resize(size_t new_size,
+	const value_type& val) {
 	if (size_ == new_size) return;
 	if (new_size < size_) {
 		resize_smaller(new_size);
@@ -144,7 +146,8 @@ void WVector<T>::resize(size_t new_size, const value_type& val) {
 		expand_capacity(new_size);
 	}
 
-	for (iterator it = data_ + size_; it != data_ + new_size; ++it) {
+	for (iterator it = data_ + size_;
+		it != data_ + new_size; ++it) {
 		alloc_.construct(it,val);
 	}
 	size_ = new_size;
