@@ -6,7 +6,7 @@
 /*   By: timothee <timothee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/08/02 10:27:06 by timothee         ###   ########.fr       */
+/*   Updated: 2022/08/06 11:00:18 by timothee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "random_access_iterator.hpp"
 
 // #include <cstdint>
+#include <cstdlib>
 #include <stdexcept>
 #include <limits>
 
@@ -31,20 +32,23 @@ namespace ft
 			typedef std::size_t	size_type;
 
 			explicit vector(const Alloc &alloc = Alloc());
-			// explicit vector(size_type n, const Alloc &alloc = Alloc());
-			explicit vector(size_type n, const T &value = T(),
+			explicit vector(size_type n,
+				const value_type &value = value_type(),
 				const Alloc &alloc = Alloc());
 			vector(const vector &other);
 			~vector();
 
-			iterator	begin();
-			iterator	end();
-			void		push_back(const value_type &val);
-			void		reserve(size_type n);
-			size_type	capacity();
-			size_type	size();
-			size_type	max_size();
-			void		resize(size_type n, const value_type &val);
+			iterator			begin();
+			iterator			end();
+			void				push_back(const value_type &val);
+			void				reserve(size_type n);
+			size_type			capacity();
+			size_type			size();
+			size_type			max_size();
+			void				resize(size_type n,
+				const value_type &val = value_type());
+			value_type&			at(std::size_t index);
+			const value_type&	at(std::size_t index) const;
 
 			void	operator=(const vector &other);
 
@@ -55,6 +59,7 @@ namespace ft
 			size_type	_capacity;
 
 			void	expand(size_type n);
+			void	_M_range_check(std::size_t index);
 	};
 }
 

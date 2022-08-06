@@ -6,7 +6,7 @@
 /*   By: timothee <timothee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:03:32 by tlafay            #+#    #+#             */
-/*   Updated: 2022/08/02 08:12:48 by timothee         ###   ########.fr       */
+/*   Updated: 2022/08/06 11:18:31 by timothee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,43 +104,36 @@ void	ft::vector<T, Alloc>::expand(size_type n)
 	
 	if (!_capacity)
 		new_capacity = 1;
-	else if (_capacity < /*SIZE_MAX*/ 2 / 2)
+	else if (_capacity < std::numeric_limits<std::size_t>::max() / 2)
 		new_capacity = 2 * _capacity;
 	else
-		new_capacity = /*SIZE_MAX*/ 2;
+		new_capacity = std::numeric_limits<std::size_t>::max();
 	if (n > new_capacity)
 		new_capacity = n;
 	reserve(new_capacity);
 }
 
-// template <typename T, typename Alloc>
-// void	ft::vector<T, Alloc>::resize(size_type n)
-// {
-// 	(void)n;
-// 	if (n < _size)
-// 	{
-// 		for (iterator it = _array + n; it != _array + _size; it++)
-// 			_alloc.destroy(it);
-// 		_size = n;
-// 		return ;
-// 	}
-// 	if (n > _size)
-// 	{
-// 		if (n > _capacity)
-// 			expand(n);
-// 	}
-// 	for (iterator it = _array + _size;
-// 		it != _array + n; it++)
-// 	{
-// 		_alloc.construct(it);
-// 	}
-// 	_size = n;
-// }
-
 template <typename T, typename Alloc>
 void	ft::vector<T, Alloc>::resize(size_type n, const value_type& val)
 {
-	(void)n, val;
+	if (n < _size)
+	{
+		for (iterator it = _array + n; it != _array + _size; it++)
+			_alloc.destroy(it);
+		_size = n;
+		return ;
+	}
+	if (n > _size)
+	{
+		if (n > _capacity)
+			expand(n);
+	}
+	for (iterator it = _array + _size;
+		it != _array + n; it++)
+	{
+		_alloc.construct(it, val);
+	}
+	_size = n;
 }
 
 template <typename T, typename Alloc>
@@ -159,6 +152,27 @@ template <typename T, typename Alloc>
 void	ft::vector<T, Alloc>::push_back (const value_type& val)
 {
 	resize(_size + 1, val);
+}
+
+template <typename T, typename Alloc>
+void	ft::vector<T, Alloc>::_M_range_check(std::size_t index)
+{
+	if (index >= _size)
+		throw std::out_of_range("_M_range_check: index too high");
+}
+
+template <typename T, typename Alloc>
+T	&ft::vector<T, Alloc>::at(std::size_t index)
+{
+	_M_range_check(index);
+	return (_array[index]);
+}
+
+template <typename T, typename Alloc>
+const T	&ft::vector<T, Alloc>::at(std::size_t index) const
+{
+	_M_range_check(index);
+	return (_array[index]);
 }
 
 template <typename T, typename Alloc>
