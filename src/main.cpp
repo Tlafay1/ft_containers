@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: timothee <timothee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 16:59:54 by tlafay            #+#    #+#             */
-/*   Updated: 2022/08/06 11:00:32 by timothee         ###   ########.fr       */
+/*   Updated: 2022/08/08 10:42:37 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,26 @@ class Test
 		~Test() {std::cout << "Destructor called" << std::endl; delete[] arr;}
 };
 
+namespace N = ft;
+
 int main(void)
 {
-	ft::vector<Test> test(5, Test());
-	Test a = test.at(10);
-	std::cout << test.capacity() << std::endl;
-	std::cout << test.size() << std::endl;
-	test.resize(10);
-	std::cout << test.size() << std::endl;
+	N::vector<int> test(5);
+	for (std::size_t i = 0; i < test.size(); i++)
+	{
+		test[i] = i;
+	}
+	test.insert(test.begin() + 2, 5, 1000);
+	N::vector<int> test2(5);
+	for (std::size_t i = 0; i < test2.size(); i++)
+	{
+		test2[i] = i;
+	}
+	test2.insert(test2.begin() + 2, 5, 1000);
+	// for (std::size_t i = 0; i < test.size(); i++)
+	// {
+	// 	std::cout << test[i] << std::endl;
+	// }
+	std::cout << (test != test2) << std::endl;
 	return 0;
 }

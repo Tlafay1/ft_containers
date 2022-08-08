@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: timothee <timothee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/08/06 11:00:18 by timothee         ###   ########.fr       */
+/*   Updated: 2022/08/08 16:03:18 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,33 @@ namespace ft
 			~vector();
 
 			iterator			begin();
+			const_iterator			begin() const;
 			iterator			end();
+			const_iterator			end() const;
 			void				push_back(const value_type &val);
+			void				pop_back();
 			void				reserve(size_type n);
 			size_type			capacity();
-			size_type			size();
+			size_type			size() const;
 			size_type			max_size();
 			void				resize(size_type n,
 				const value_type &val = value_type());
-			value_type&			at(std::size_t index);
-			const value_type&	at(std::size_t index) const;
+			value_type&			at(size_type index);
+			const value_type&	at(size_type index) const;
+			bool				empty() const;
+			value_type			&front();
+			value_type			&back();
+			iterator			insert(iterator position,
+				const value_type &val);
+			iterator			insert(iterator position, size_type n,
+				const value_type &val);
+			void				clear();
 
-			void	operator=(const vector &other);
+
+			void		operator=(const vector &other);
+			value_type	operator[](size_type n) const;
+			value_type	&operator[](size_type n);
+
 
 		private:
 			Alloc		_alloc;
@@ -59,7 +74,7 @@ namespace ft
 			size_type	_capacity;
 
 			void	expand(size_type n);
-			void	_M_range_check(std::size_t index);
+			void	range_check(std::size_t index);
 	};
 }
 
