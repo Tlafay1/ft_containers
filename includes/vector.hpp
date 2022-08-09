@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/08/08 16:03:18 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/08/09 13:14:51 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ namespace ft
 	{
 		public:
 			typedef T			value_type;
-			typedef T*			iterator;
-			typedef const T*	const_iterator;
+			typedef typename ft::random_access_iterator<value_type>	iterator;
+			typedef const iterator	const_iterator;
 			typedef std::size_t	size_type;
 
 			explicit vector(const Alloc &alloc = Alloc());
@@ -39,9 +39,9 @@ namespace ft
 			~vector();
 
 			iterator			begin();
-			const_iterator			begin() const;
+			const_iterator		begin() const;
 			iterator			end();
-			const_iterator			end() const;
+			const_iterator		end() const;
 			void				push_back(const value_type &val);
 			void				pop_back();
 			void				reserve(size_type n);
@@ -69,7 +69,7 @@ namespace ft
 
 		private:
 			Alloc		_alloc;
-			value_type	*_array;
+			T			*_array;
 			size_type	_size;
 			size_type	_capacity;
 

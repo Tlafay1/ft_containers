@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:03:32 by tlafay            #+#    #+#             */
-/*   Updated: 2022/08/08 16:01:52 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/08/09 13:14:42 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ ft::vector<T, Alloc>::vector(size_type n, const T& value, const Alloc &alloc):
 	_capacity(n)
 {
 	_array = _alloc.allocate(n);
-	for (iterator it = _array; it != _array + _size; ++it)
+	for (T *it = _array; it != _array + _size; ++it)
 	{
 		_alloc.construct(it, value);
 	}
@@ -54,25 +54,25 @@ ft::vector<T, Alloc>::~vector()
 }
 
 template <typename T, typename Alloc>
-T	*ft::vector<T, Alloc>::begin()
+typename ft::random_access_iterator<T> ft::vector<T, Alloc>::begin()
 {
 	return	_array;
 }
 
 template <typename T, typename Alloc>
-const T	*ft::vector<T, Alloc>::begin() const
+const typename ft::random_access_iterator<T> ft::vector<T, Alloc>::begin() const
 {
 	return	_array;
 }
 
 template <typename T, typename Alloc>
-T	*ft::vector<T, Alloc>::end()
+typename ft::random_access_iterator<T> ft::vector<T, Alloc>::end()
 {
 	return	_array + _size;
 }
 
 template <typename T, typename Alloc>
-const T	*ft::vector<T, Alloc>::end() const
+const typename ft::random_access_iterator<T> ft::vector<T, Alloc>::end() const
 {
 	return	_array + _size;
 }
@@ -130,7 +130,7 @@ void	ft::vector<T, Alloc>::resize(size_type n, const value_type& val)
 {
 	if (n < _size)
 	{
-		for (iterator it = _array + n; it != _array + _size; it++)
+		for (T *it = _array + n; it != _array + _size; it++)
 			_alloc.destroy(it);
 		_size = n;
 		return ;
@@ -140,7 +140,7 @@ void	ft::vector<T, Alloc>::resize(size_type n, const value_type& val)
 		if (n > _capacity)
 			expand(n);
 	}
-	for (iterator it = _array + _size;
+	for (T *it = _array + _size;
 		it != _array + n; it++)
 	{
 		_alloc.construct(it, val);
@@ -213,14 +213,15 @@ T	&ft::vector<T, Alloc>::back()
 }
 
 template <typename T, typename Alloc>
-T	*ft::vector<T, Alloc>::insert(iterator position, const value_type &val)
+typename ft::random_access_iterator<T> ft::vector<T, Alloc>::insert(iterator position,
+	const value_type &val)
 {
 	value_type	tmp = val;
 	value_type	tmp2;
 	std::size_t	size = position - this->begin();
 
 	resize(_size + 1);
-	for (typename ft::vector<T>::iterator it = this->begin() + size; it != this->end();)
+	for (typename ft::vector<T>::iterator it = this->begin()+ size; it != this->end();)
 	{
 		tmp2 = *it;
 		*it = tmp;
@@ -231,7 +232,8 @@ T	*ft::vector<T, Alloc>::insert(iterator position, const value_type &val)
 }
 
 template <typename T, typename Alloc>
-T	*ft::vector<T, Alloc>::insert(iterator position, size_type n, const value_type &val)
+typename ft::random_access_iterator<T> ft::vector<T, Alloc>::insert(iterator position,
+	size_type n, const value_type &val)
 {
 	std::size_t	size = position - this->begin();
 

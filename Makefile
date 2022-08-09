@@ -10,7 +10,7 @@ OBJS := ${SRCS:.cpp=.o}
 
 OBJDIR := $(addprefix obj/, $(OBJS))
 
-INCLUDES := vector.hpp vector.tpp
+INCLUDES := vector.hpp vector.tpp random_access_iterator.hpp
 
 INCDIR := $(addprefix includes/, $(INCLUDES))
 
