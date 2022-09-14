@@ -71,7 +71,7 @@ namespace ft
 			}
 			random_access_iterator& operator++(int)
 			{
-				random_access_iterator tmp(*this);
+				static random_access_iterator tmp(*this);
 				++_ptr;
 				return tmp;
 			}
@@ -85,9 +85,9 @@ namespace ft
 			{
 				return random_access_iterator(_ptr+rhs._ptr);
 			}
-			random_access_iterator operator-(const random_access_iterator& rhs)
+			long operator-(const random_access_iterator& rhs)
 			{
-				return random_access_iterator(_ptr-rhs._ptr);
+				return _ptr-rhs._ptr;
 			}
 			random_access_iterator operator+(const int& rhs)
 			{

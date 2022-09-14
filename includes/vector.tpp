@@ -235,7 +235,7 @@ template <typename T, typename Alloc>
 typename ft::random_access_iterator<T> ft::vector<T, Alloc>::insert(iterator position,
 	size_type n, const value_type &val)
 {
-	std::size_t	size = position - this->begin();
+	int	size = position - this->begin();
 
 	resize(_size + 1);
 	ft::vector<T, Alloc> tmp(this->size() - size);
@@ -282,12 +282,12 @@ bool operator==(const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
 {
 	if (lhs.size() != rhs.size())
 		return (false);
-	for (typename ft::vector<T>::const_iterator it1 = lhs.begin(), it2 = rhs.begin();
-		it1 != lhs.end() && it2 != rhs.end(); ++it1, ++it2)
-	{
-		if (*it1 != *it2)
-			return (false);
-	}
+	// for (typename ft::vector<T>::const_iterator it1 = lhs.begin(), it2 = rhs.begin();
+	// 	it1 != lhs.end() && it2 != rhs.end(); ++it1, ++it2)
+	// {
+	// 	if (*it1 != *it2)
+	// 		return (false);
+	// }
 	return (true);
 }
 
