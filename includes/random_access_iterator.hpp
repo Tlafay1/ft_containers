@@ -13,6 +13,8 @@
 #ifndef RANDOM_ACCESS_ITERATOR_HPP
 # define RANDOM_ACCESS_ITERATOR_HPP
 
+// #include "nullptr.hpp"
+
 #include "iterator.hpp"
 
 namespace ft
@@ -21,7 +23,7 @@ namespace ft
 	class random_access_iterator: ft::iterator<ft::random_access_iterator_tag, T>
 	{
 		public:
-			random_access_iterator(): _ptr(nullptr){}
+			random_access_iterator(): _ptr(NULL){}
 			random_access_iterator(T *rhs) : _ptr(rhs) {}
 			random_access_iterator(const random_access_iterator &rhs) : _ptr(rhs._ptr){}
 
@@ -83,7 +85,7 @@ namespace ft
 			}
 			random_access_iterator operator+(const random_access_iterator& rhs)
 			{
-				return random_access_iterator(_ptr+rhs._ptr);
+				return random_access_iterator(_ptr + rhs._ptr);
 			}
 			long operator-(const random_access_iterator& rhs)
 			{
@@ -91,21 +93,21 @@ namespace ft
 			}
 			random_access_iterator operator+(const int& rhs)
 			{
-				return random_access_iterator(_ptr+rhs);
+				return random_access_iterator(_ptr + rhs);
 			}
 			random_access_iterator operator-(const int& rhs)
 			{
-				return random_access_iterator(_ptr-rhs);
+				return random_access_iterator(_ptr - rhs);
 			}
 			// random_access_iterator operator+(const int& lhs,
 			// 	const random_access_iterator& rhs)
 			// {
-			// 	return random_access_iterator(lhs+_ptr);
+			// 	return random_access_iterator(lhs + _ptr);
 			// }
 			// random_access_iterator operator-(const int& lhs,
 			// 	const random_access_iterator& rhs)
 			// {
-			// 	return random_access_iterator(lhs-_ptr);
+			// 	return random_access_iterator(lhs - _ptr);
 			// }
 
 	    	// Operators : comparison
