@@ -1,3 +1,6 @@
+#ifndef IS_INTEGRAL_HPP
+# define IS_INTEGRAL_HPP
+
 namespace ft
 {
 	template <class T, T v>
@@ -42,14 +45,4 @@ namespace ft
 	template<> struct is_integral <const char32_t>:					public integral_constant<bool, true>{};
 }
 
-// bool
-// signed char
-// short int
-// int
-// long int
-// long long int
-// unsigned char
-// unsigned short int
-// unsigned int
-// unsigned long int
-// unsigned long long int
+#endif

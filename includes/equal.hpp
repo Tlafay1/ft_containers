@@ -1,3 +1,6 @@
+#ifndef EQUAL_HPP
+# define EQUAL_HPP
+
 namespace ft
 {
 	template <class InputIterator1, class InputIterator2>
@@ -13,3 +16,5 @@ namespace ft
 		return true;
 	}
 }
+
+#endif
