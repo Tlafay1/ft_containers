@@ -4,14 +4,15 @@ NAME := ft_containers
 
 CPPFLAGS := -Wall -Wextra -Werror -std=c++98 -fsanitize=address
 
-SRCS := main.cpp
+SRCS := main.cpp vector_tests.cpp
 
 OBJS := ${SRCS:.cpp=.o}
 
 OBJDIR := $(addprefix obj/, $(OBJS))
 
 INCLUDES := vector.hpp vector.tpp random_access_iterator.hpp iterator_traits.hpp \
-			reverse_iterator.hpp enable_if.hpp equal.hpp is_integral.hpp
+			reverse_iterator.hpp enable_if.hpp equal.hpp is_integral.hpp stack.hpp \
+			stack.tpp
 
 INCDIR := $(addprefix includes/, $(INCLUDES))
 

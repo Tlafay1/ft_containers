@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/09/15 15:29:28 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/09/19 16:39:28 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,21 @@ namespace ft
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value >::type* = 0);
 			vector(const vector &other);
 			~vector();
+			vector		&operator=(const vector &other);
+			template <class InputIterator>
+			void					assign(InputIterator first, InputIterator last,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			void					assign(size_type n, const value_type& val);
+			// get_allocator
 
+			value_type&				at(size_type index);
+			const value_type&		at(size_type index) const;
+			value_type				operator[](size_type n) const;
+			value_type				&operator[](size_type n);
+			value_type				&front();
+			value_type				&back();
+			// data
+			
 			iterator				begin();
 			const_iterator			begin() const;
 			iterator				end();
@@ -64,33 +78,25 @@ namespace ft
 			const_reverse_iterator	rbegin() const;
 			reverse_iterator		rend();
 			const_reverse_iterator	rend() const;
-			void					push_back(const value_type &val);
-			void					pop_back();
-			void					reserve(size_type n);
-			size_type				capacity();
+			
+			bool					empty() const;
 			size_type				size() const;
 			size_type				max_size();
-			void					resize(size_type n,
-				const value_type &val = value_type());
-			value_type&				at(size_type index);
-			const value_type&		at(size_type index) const;
-			bool					empty() const;
-			value_type				&front();
-			value_type				&back();
+			void					reserve(size_type n);
+			size_type				capacity();
+			
+			void					clear();
 			iterator				insert(iterator position,
 				const value_type &val);
+			// erase
+			void					push_back(const value_type &val);
+			void					pop_back();
+			void					resize(size_type n,
+				const value_type &val = value_type());
 			iterator				insert(iterator position, size_type n,
 				const value_type &val);
-			void					clear();
 			void					swap(vector& other);
-			template <class InputIterator>
-			void					assign(InputIterator first, InputIterator last,
-				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
-			void					assign(size_type n, const value_type& val);
 
-			value_type	operator[](size_type n) const;
-			value_type	&operator[](size_type n);
-			vector		&operator=(const vector &other);
 
 		private:
 			allocator_type	_alloc;
