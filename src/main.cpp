@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "vector.hpp"
+#include "stack.hpp"
 
 class Test
 {
