@@ -89,7 +89,7 @@ namespace ft
 			void					clear();
 			iterator				insert(const_iterator position,
 				const value_type &val);
-			void					insert(const_iterator position, size_type count,
+			void					insert(const_iterator position, size_type n,
 				const value_type &val);
 			template< class InputIterator >
 			void					insert(const_iterator position,
