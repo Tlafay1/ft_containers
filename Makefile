@@ -2,7 +2,7 @@ CC = c++
 
 NAME := ft_containers
 
-CPPFLAGS := -Wall -Wextra -Werror -std=c++98 -fsanitize=address
+CPPFLAGS := -Wall -Wextra -Werror -std=c++98 -g
 
 SRCS := main.cpp vector_tests.cpp
 

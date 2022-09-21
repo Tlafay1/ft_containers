@@ -55,32 +55,30 @@ namespace ft
 			return *this;
 		}
 
-		reverse_iterator &operator++(int)
-		{
-			reverse_iterator tmp = *this;
-			--(*this);
-			return (tmp);
-		}
-
-		reverse_iterator &operator--(int)
+		reverse_iterator operator++(int)
 		{
 			reverse_iterator tmp = *this;
 			++(*this);
 			return (tmp);
 		}
 
-		reverse_iterator &operator+(difference_type n)
+		reverse_iterator operator--(int)
 		{
-			iterator_type tmp = this->base();
-			tmp -= n;
+			reverse_iterator tmp = *this;
+			--(*this);
 			return (tmp);
 		}
 
-		reverse_iterator &operator-(difference_type n)
+		reverse_iterator operator+(difference_type n)
 		{
-			iterator_type tmp = this->base();
-			tmp += n;
-			return (tmp);
+			iterator_type tmp = this->base() - n;
+			return ((reverse_iterator)tmp);
+		}
+
+		reverse_iterator operator-(difference_type n)
+		{
+			iterator_type tmp = this->base() + n;
+			return ((reverse_iterator)tmp);
 		}
 
 		reverse_iterator &operator+=(difference_type n)
@@ -103,42 +101,42 @@ namespace ft
 	bool operator==(const reverse_iterator<Iter> &a,
 		const reverse_iterator<Iter> &b)
 	{
-		return a.current == b.current;
+		return a.base() == b.base();
 	}
 	
 	template <class Iter>
 	bool operator!=(const reverse_iterator<Iter> &a,
 		const reverse_iterator<Iter> &b)
 	{
-		return a.current != b.current;
+		return a.base() != b.base();
 	}
 
 	template <class Iter>
 	bool operator<(const reverse_iterator<Iter> &a,
 		const reverse_iterator<Iter> &b)
 	{
-		return a.current < b.current;
+		return a.base() < b.base();
 	}
 
 	template <class Iter>
 	bool operator<=(const reverse_iterator<Iter> &a,
 		const reverse_iterator<Iter> &b)
 	{
-		return a.current <= b.current;
+		return a.base() <= b.base();
 	}
 
 	template <class Iter>
 	bool operator>(const reverse_iterator<Iter> &a,
 		const reverse_iterator<Iter> &b)
 	{
-		return a.current > b.current;
+		return a.base() > b.base();
 	}
 
 	template <class Iter>
 	bool operator>=(const reverse_iterator<Iter> &a,
 		const reverse_iterator<Iter> &b)
 	{
-		return a.current >= b.current;
+		return a.base() >= b.base();
 	}
 
 	template< class Iter >

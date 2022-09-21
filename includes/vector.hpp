@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/09/19 16:39:28 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/09/21 11:11:49 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,16 @@ namespace ft
 			void					assign(InputIterator first, InputIterator last,
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
 			void					assign(size_type n, const value_type& val);
-			// get_allocator
+			allocator_type			get_allocator() const;
 
-			value_type&				at(size_type index);
-			const value_type&		at(size_type index) const;
+			value_type				&at(size_type index);
+			const value_type		&at(size_type index) const;
 			value_type				operator[](size_type n) const;
 			value_type				&operator[](size_type n);
 			value_type				&front();
 			value_type				&back();
-			// data
+			value_type				*data();
+			const value_type		*data() const;
 			
 			iterator				begin();
 			const_iterator			begin() const;
@@ -86,15 +87,20 @@ namespace ft
 			size_type				capacity();
 			
 			void					clear();
-			iterator				insert(iterator position,
+			iterator				insert(const_iterator position,
 				const value_type &val);
-			// erase
+			void					insert(const_iterator position, size_type count,
+				const value_type &val);
+			template< class InputIterator >
+			void					insert(const_iterator position,
+				InputIterator first, InputIterator last,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			iterator				erase(iterator position);
+			iterator				erase(iterator first, iterator last);
 			void					push_back(const value_type &val);
 			void					pop_back();
 			void					resize(size_type n,
 				const value_type &val = value_type());
-			iterator				insert(iterator position, size_type n,
-				const value_type &val);
 			void					swap(vector& other);
 
 

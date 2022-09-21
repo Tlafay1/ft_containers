@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:03:32 by tlafay            #+#    #+#             */
-/*   Updated: 2022/09/15 17:16:58 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/09/21 11:06:02 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,29 +116,79 @@ namespace ft
 	}
 
 	template <typename T, typename Alloc>
+	typename vector<T, Alloc>::value_type	*vector<T, Alloc>::data()
+	{
+		if (_size == 0)
+			return (NULL);
+		return (_array);
+	}
+
+	template <typename T, typename Alloc>
+	const typename vector<T, Alloc>::value_type	*vector<T, Alloc>::data() const
+	{
+		if (_size == 0)
+			return (NULL);
+		return (_array);
+	}
+
+	template <typename T, typename Alloc>
+	typename vector<T, Alloc>::iterator	vector<T, Alloc>::erase(iterator position)
+	{
+		if (position + 1 != end())
+			std::copy(position + 1, end(), position);
+		_alloc.destroy(position);
+		_size--;
+		_array = position;
+		return position;
+	}
+
+	template <typename T, typename Alloc>
+	typename vector<T, Alloc>::iterator	vector<T, Alloc>::erase(iterator first, iterator last)
+	{
+		if (first != last)
+		{
+			if (last != end())
+				std::copy(last, end(), first);
+			for (iterator it = first; it != last; it++)
+				_alloc.destroy(it);
+			_size = first - _array;
+		}
+		return first;
+	}
+
+	template <typename T, typename Alloc>
+	typename vector<T, Alloc>::allocator_type vector<T, Alloc>::get_allocator() const
+	{
+		return (_alloc);
+	}
+
+	template <typename T, typename Alloc>
 	void	vector<T, Alloc>::reserve(size_type n)
 	{
 		if (n <= _capacity)
 			return ;
+
+		size_type i = 0;
+		for (const_iterator it = begin(); it != end(); ++it)
+			i++;
+		if (i != _size)
+			std::cerr << "Size is not good !" << std::endl;
 		
-		size_type	new_capacity = n;
-		size_type	new_size = _size;
-		T			*new_array = _alloc.allocate(n);
+		pointer			new_array = _alloc.allocate(n);
 
 		for (size_type i = 0; i < _size; ++i)
 		{
 			_alloc.construct(new_array + i, _array[i]);
 		}
 
-		std::swap(new_capacity, _capacity);
-		std::swap(new_size, _size);
 		std::swap(new_array, _array);
 
-		for (size_type i = 0; i < new_size; ++i)
+		for (size_type i = 0; i < _size; ++i)
 		{
 			_alloc.destroy(new_array + i);
 		}
-		_alloc.deallocate(new_array, new_capacity);
+		_alloc.deallocate(new_array, _capacity);
+		_capacity = n;
 	}
 
 	template <typename T, typename Alloc>
@@ -162,7 +212,7 @@ namespace ft
 	{
 		if (n < _size)
 		{
-			for (T *it = _array + n; it != _array + _size; it++)
+			for (pointer it = _array + n; it != _array + _size; it++)
 				_alloc.destroy(it);
 			_size = n;
 			return ;
@@ -172,7 +222,7 @@ namespace ft
 			if (n > _capacity)
 				expand(n);
 		}
-		for (T *it = _array + _size;
+		for (pointer it = _array + _size;
 			it != _array + n; it++)
 		{
 			_alloc.construct(it, val);
@@ -183,6 +233,11 @@ namespace ft
 	template <typename T, typename Alloc>
 	typename vector<T, Alloc>::size_type	vector<T, Alloc>::size() const
 	{
+		size_type i = 0;
+		for (const_iterator it = begin(); it != end(); ++it)
+			i++;
+		if (i != _size)
+			std::cerr << "Size is not good !" << std::endl;
 		return (_size);
 	}
 
@@ -246,7 +301,7 @@ namespace ft
 	}
 
 	template <typename T, typename Alloc>
-	typename vector<T, Alloc>::pointer	vector<T, Alloc>::insert(iterator position,
+	typename vector<T, Alloc>::pointer	vector<T, Alloc>::insert(const_iterator position,
 		const value_type &val)
 	{
 		value_type	tmp = val;
@@ -254,7 +309,7 @@ namespace ft
 		size_type	size = position - this->begin();
 
 		resize(_size + 1);
-		for (typename vector<T>::iterator it = this->begin()+ size; it != this->end();)
+		for (iterator it = this->begin()+ size; it != this->end();)
 		{
 			tmp2 = *it;
 			*it = tmp;
@@ -265,24 +320,46 @@ namespace ft
 	}
 
 	template <typename T, typename Alloc>
-	typename vector<T, Alloc>::pointer	vector<T, Alloc>::insert(iterator position,
-		size_type n, const value_type &val)
+	void	vector<T, Alloc>::insert(const_iterator position,
+		size_type count, const value_type &val)
 	{
 		size_type	size = position - this->begin();
 
 		resize(_size + 1);
 		vector<T, Alloc> tmp(this->size() - size);
-		for (typename vector<T>::iterator it1 = this->begin() + size, it2 = tmp.begin();
+		for (iterator it1 = this->begin() + size, it2 = tmp.begin();
 			it1 != this->end(); it1++, it2++)
 			*it2 = *it1;
 		for (size_type i = 0; i < tmp.size(); i++)
 			this->pop_back();
-		while (n--)
+		while (count--)
 			this->push_back(val);
-		for (typename vector<T>::iterator it = tmp.begin();
+		for (iterator it = tmp.begin();
 			it != tmp.end() - 1; it++)
 			this->push_back(*it);
-		return (this->begin() + size);
+	}
+
+	template <typename T, typename Alloc>
+	template< class InputIterator >
+	void	vector<T, Alloc>::insert(const_iterator position,
+		InputIterator first, InputIterator last,
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+	{
+		size_type idx = position - _array;
+		size_type cnt = std::distance(first, last);
+
+		this->reserve(_size + cnt);
+
+		for (size_type i = 0; i < cnt; ++i) {
+			_alloc.construct(_array + _size + i, *first);
+		}
+		for (difference_type i = _size - 1; i >= 0 && i >= (difference_type)idx; --i) {
+			_array[i + cnt] = _array[i];
+		}
+		for (size_type i = idx; i < idx + cnt; ++i) {
+			_array[i] = *first++;
+		}
+		_size += cnt;
 	}
 
 	template <typename T, typename Alloc>
@@ -316,16 +393,16 @@ namespace ft
 		this->clear();
 		this->reserve(n);
 		for (size_type i = 0; i < n; i++)
-			_alloc.construct(&this->_alloc[i], val);
+			_alloc.construct(this->_array + i, val);
 	}
 
 	template <typename T, typename Alloc>
 	vector<T, Alloc>
 		&vector<T, Alloc>::operator=(const vector<T, Alloc> &other)
 	{
-		this->resize(other.size());
-		for (size_type i = 0; i < other.size(); i++)
-			(*this)[i] = other[i];
+		this->_alloc = other._alloc;
+		this->reserve(other._size);
+		this->assign(other.begin(), other.end());
 		return (*this);
 	}
 
