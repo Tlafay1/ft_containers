@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include "my_tests.hpp"
+#include "map.hpp"
 
 int main() {
 	test_vector();
