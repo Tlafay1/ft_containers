@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/09/22 13:29:16 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/09/22 14:30:04 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,14 @@ namespace ft
 			void					assign(size_type n, const value_type& val);
 			allocator_type			get_allocator() const;
 
-			value_type				&at(size_type index);
-			const value_type		&at(size_type index) const;
-			value_type				operator[](size_type n) const;
-			value_type				&operator[](size_type n);
-			value_type				&front();
-			value_type				&back();
+			reference				&at(size_type index);
+			const_reference			at(size_type index) const;
+			reference				operator[](size_type n);
+			const_reference			operator[](size_type n) const;
+			reference				front();
+			const_reference			front() const;
+			reference				back();
+			const_reference			back() const;
 			value_type				*data();
 			const value_type		*data() const;
 
@@ -83,8 +85,8 @@ namespace ft
 			bool					empty() const;
 			size_type				size() const;
 			size_type				max_size();
-			void					reserve(size_type n);
-			size_type				capacity();
+			void					reserve(size_type new_cap);
+			size_type				capacity() const;
 
 			void					clear();
 			iterator				insert(const_iterator position,
