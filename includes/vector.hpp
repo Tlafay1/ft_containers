@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/09/21 11:11:49 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/09/22 11:14:00 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include <cstdlib>
 #include <stdexcept>
 #include <limits>
+#include <algorithm>
 
 namespace ft
 {
@@ -102,7 +103,6 @@ namespace ft
 			void					resize(size_type n,
 				const value_type &val = value_type());
 			void					swap(vector& other);
-
 
 		private:
 			allocator_type	_alloc;

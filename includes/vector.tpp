@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:03:32 by tlafay            #+#    #+#             */
-/*   Updated: 2022/09/21 16:13:33 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/09/22 11:39:37 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ namespace ft
 	}
 
 	template <typename T, typename Alloc>
-	vector<T, Alloc>::vector(const vector<T, Alloc> &other)
+	vector<T, Alloc>::vector(const vector<T, Alloc> &other):
+		_array(pointer()),
+		_size(0),
+		_capacity(0)
 	{
 		*this = other;
 	}
@@ -132,11 +135,13 @@ namespace ft
 	{
 		if (position + 1 != end())
 			std::copy(position + 1, end(), position);
-		_alloc.destroy(position);
 		_size--;
-		_array = position;
-		return position;
+		_alloc.destroy(_array + _size);
+		return (position);
+
 	}
+
+// this->destroy_from(first + (this->end() - last));
 
 	template <typename T, typename Alloc>
 	typename vector<T, Alloc>::iterator	vector<T, Alloc>::erase(iterator first, iterator last)
@@ -145,10 +150,11 @@ namespace ft
 		{
 			if (last != end())
 				std::copy(last, end(), first);
-			for (iterator it = first; it != last; it++)
+			for (iterator it = first + (this->end() - last); it != end(); it++)
 				_alloc.destroy(it);
-			_size = first - _array;
+			_size = first + (this->end() - last) - _array;
 		}
+
 		return first;
 	}
 
@@ -161,21 +167,37 @@ namespace ft
 	template <typename T, typename Alloc>
 	void	vector<T, Alloc>::reserve(size_type n)
 	{
-		if (n <= _capacity)
-		{
-			return;
-		}
-		vector tmp(0);
-		tmp._array = tmp._alloc.allocate(n);
-		tmp._capacity = n;
+		// if (n <= _capacity)
+		// 	return;
+		// vector tmp(0);
+		// tmp._array = tmp._alloc.allocate(n);
+		// tmp._capacity = n;
 
-		for (size_t i = 0; i < _size; i++)
-		{
-			tmp._alloc.construct(tmp._array + i, _array[i]);
-			tmp._size = i;
-		}
+		// for (size_t i = 0; i < _size; i++)
+		// {
+		// 	tmp._alloc.construct(tmp._array + i, _array[i]);
+		// 	tmp._size = i;
+		// }
 
-		tmp.swap(*this);
+		// tmp.swap(*this);
+
+		if (n == 0 || this->_capacity >= n)
+		{
+			return ;
+		}
+		pointer	tmp;
+		if (n == 0)
+			tmp = pointer();
+		else
+			tmp = this->_alloc.allocate(n);
+		for (size_type i = 0; i < this->_size; i++){
+			this->_alloc.construct(tmp + i, _array[i]);
+			this->_alloc.destroy(_array + i);
+		}
+		_alloc.deallocate(this->_array, this->_capacity);
+		this->_array = tmp;
+		this->_capacity = n;
+
 }
 
 	template <typename T, typename Alloc>
@@ -185,10 +207,10 @@ namespace ft
 		
 		if (!_capacity)
 			new_capacity = 1;
-		else if (_capacity < std::numeric_limits<std::size_t>::max() / 2)
+		else if (_capacity < max_size() / 2)
 			new_capacity = 2 * _capacity;
 		else
-			new_capacity = std::numeric_limits<std::size_t>::max();
+			new_capacity = max_size();
 		if (n > new_capacity)
 			new_capacity = n;
 		reserve(new_capacity);
@@ -207,30 +229,29 @@ namespace ft
 			}
 			this->_size = tmp - this->_array;
 		}
+
 	}
 
 	template <typename T, typename Alloc>
 	typename vector<T, Alloc>::size_type	vector<T, Alloc>::size() const
 	{
-		size_type i = 0;
-		for (const_iterator it = begin(); it != end(); ++it)
-			i++;
-		if (i != _size)
-			std::cerr << "Size is not good !" << std::endl;
 		return (_size);
 	}
 
 	template <typename T, typename Alloc>
 	typename vector<T, Alloc>::size_type	vector<T, Alloc>::max_size()
 	{
-		return (std::numeric_limits<typename
-			std::iterator_traits<iterator>::difference_type>::max());
+		return (std::min(_alloc.max_size(),
+			static_cast<size_type>(std::numeric_limits<difference_type>::max())));
 	}
 
 	template <typename T, typename Alloc>
 	void	vector<T, Alloc>::push_back (const value_type& val)
 	{
-		resize(_size + 1, val);
+		if (_capacity == _size)
+			expand(_capacity + 1);
+		_alloc.construct(_array + _size, val);
+		_size++;
 	}
 
 	template <typename T, typename Alloc>
@@ -283,39 +304,32 @@ namespace ft
 	typename vector<T, Alloc>::pointer	vector<T, Alloc>::insert(const_iterator position,
 		const value_type &val)
 	{
-		value_type	tmp = val;
-		value_type	tmp2;
 		size_type	size = position - this->begin();
 
-		resize(_size + 1);
-		for (iterator it = this->begin()+ size; it != this->end();)
-		{
-			tmp2 = *it;
-			*it = tmp;
-			tmp = tmp2;
-			it++;
-		}
-		return (this->begin() + size);
+		if (position == this->end())
+			this->push_back(val);
+		else
+			this->insert(position, 1, val);
+		return (iterator(_array + size));
 	}
 
 	template <typename T, typename Alloc>
 	void	vector<T, Alloc>::insert(const_iterator position,
 		size_type n, const value_type &val)
 	{
-		size_type	size = position - this->begin();
+		size_type	size = position - _array;
 
-		resize(_size + n);
-		vector<T, Alloc> tmp(this->size() - size);
-		for (iterator it1 = this->begin() + size, it2 = tmp.begin();
-			it1 != this->end(); it1++, it2++)
-			*it2 = *it1;
-		for (size_type i = 0; i < tmp.size(); i++)
-			this->pop_back();
-		while (n--)
-			this->push_back(val);
-		for (iterator it = tmp.begin();
-			it != tmp.end() - 1; it++)
-			this->push_back(*it);
+		reserve(_size + n);
+		iterator src = end() - 1;
+		for (iterator dest = src + n; src >= _array + size; src--, dest--)
+		{
+			_alloc.construct(dest, *src);
+			_alloc.destroy(src);
+		}
+		src++;
+		for (size_type i = 0; i < n; ++i, ++src)
+			_alloc.construct(src, val);
+		_size += n;
 	}
 
 	template <typename T, typename Alloc>
@@ -362,7 +376,7 @@ namespace ft
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
 		this->clear();
-		for (; first != last; first++)
+		for (; first != last; ++first)
 			this->push_back(*first);
 	}
 
@@ -373,12 +387,13 @@ namespace ft
 		this->reserve(n);
 		for (size_type i = 0; i < n; i++)
 			_alloc.construct(this->_array + i, val);
+		_size = n;
 	}
 
 	template <typename T, typename Alloc>
 	vector<T, Alloc>
 		&vector<T, Alloc>::operator=(const vector<T, Alloc> &other)
-	{
+	{		
 		this->_alloc = other._alloc;
 		this->reserve(other._size);
 		this->assign(other.begin(), other.end());
