@@ -6,7 +6,7 @@
 /*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/09/22 11:14:00 by tlafay           ###   ########.fr       */
+/*   Updated: 2022/09/22 13:29:16 by tlafay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 #include "enable_if.hpp"
 #include "is_integral.hpp"
 
-// #include <cstdint>
 #include <cstdlib>
 #include <stdexcept>
 #include <limits>
@@ -71,7 +70,7 @@ namespace ft
 			value_type				&back();
 			value_type				*data();
 			const value_type		*data() const;
-			
+
 			iterator				begin();
 			const_iterator			begin() const;
 			iterator				end();
@@ -80,13 +79,13 @@ namespace ft
 			const_reverse_iterator	rbegin() const;
 			reverse_iterator		rend();
 			const_reverse_iterator	rend() const;
-			
+
 			bool					empty() const;
 			size_type				size() const;
 			size_type				max_size();
 			void					reserve(size_type n);
 			size_type				capacity();
-			
+
 			void					clear();
 			iterator				insert(const_iterator position,
 				const value_type &val);
