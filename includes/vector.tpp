@@ -101,7 +101,7 @@ namespace ft
 	}
 
 	template <typename T, typename Alloc>
-	typename vector<T, Alloc>::reference	&vector<T, Alloc>::at(std::size_t index)
+	typename vector<T, Alloc>::reference	vector<T, Alloc>::at(std::size_t index)
 	{
 		range_check(index);
 		return (_array[index]);
@@ -144,13 +144,13 @@ namespace ft
 	template <typename T, typename Alloc>
 	typename vector<T, Alloc>::reference	vector<T, Alloc>::back()
 	{
-		return (*std::prev(end()));
+		return (*(end() - 1));
 	}
 
 	template <typename T, typename Alloc>
 	typename vector<T, Alloc>::const_reference	vector<T, Alloc>::back() const
 	{
-		return (*std::prev(end()));
+		return (*(end() - 1));
 	}
 
 	template <typename T, typename Alloc>

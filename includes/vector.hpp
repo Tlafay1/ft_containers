@@ -62,7 +62,7 @@ namespace ft
 			void					assign(size_type n, const value_type& val);
 			allocator_type			get_allocator() const;
 
-			reference				&at(size_type index);
+			reference				at(size_type index);
 			const_reference			at(size_type index) const;
 			reference				operator[](size_type n);
 			const_reference			operator[](size_type n) const;
