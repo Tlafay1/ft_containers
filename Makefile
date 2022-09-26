@@ -12,11 +12,14 @@ OBJDIR := $(addprefix obj/, $(OBJS))
 
 INCLUDES := vector.hpp vector.tpp random_access_iterator.hpp iterator_traits.hpp \
 			reverse_iterator.hpp enable_if.hpp equal.hpp is_integral.hpp stack.hpp \
-			stack.tpp map.hpp pair.hpp
+			stack.tpp map.hpp pair.hpp avl_tree.hpp avl_node.hpp avl_tree.tpp avl_node.tpp
 
 INCDIR := $(addprefix includes/, $(INCLUDES))
 
 all : $(NAME)
+
+run : all
+	./$(NAME)
 
 $(NAME) : $(OBJDIR)
 	echo "\x1b[34m $1[Compiling $(NAME)]\x1b[0m"
@@ -31,7 +34,7 @@ clean :
 	$(RM) $(OBJDIR)
 
 fclean : clean
-	$(RM) $(NAME) 
+	$(RM) $(NAME)
 
 re : fclean all
 
