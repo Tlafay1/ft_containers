@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   vector.hpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tlafay <tlafay@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/29 17:17:23 by tlafay            #+#    #+#             */
-/*   Updated: 2022/09/22 14:30:04 by tlafay           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
@@ -55,7 +43,8 @@ namespace ft
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value >::type* = 0);
 			vector(const vector &other);
 			~vector();
-			vector		&operator=(const vector &other);
+
+			vector					&operator=(const vector &other);
 			template <class InputIterator>
 			void					assign(InputIterator first, InputIterator last,
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);

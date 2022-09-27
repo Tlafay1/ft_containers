@@ -4,6 +4,7 @@
 #include "pair.hpp"
 #include "iterator_traits.hpp"
 #include "reverse_iterator.hpp"
+#include "avl_tree.hpp"
 
 namespace ft
 {
