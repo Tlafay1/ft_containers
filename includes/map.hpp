@@ -9,22 +9,25 @@
 namespace ft
 {
 	template< class Key, class T, class Compare = std::less<Key>,
-		class Allocator = std::allocator< std::pair< const Key, T> > >
+		class Allocator = std::allocator< std::pair<const Key, T> > >
 	class map
 	{
-		typedef key_type										Key;
+		typedef Key												key_type;
 		typedef	T												mapped_type;
-		typename typedef ft::pair<const Key, T>					value_type;
+		typedef pair<const Key, T>								value_type;
 		typedef	std::size_t										size_type;
-		typedef	ft::iterator_traits<iterator>::difference_type	difference_type;
 		typedef	Compare											key_compare;
 		typedef	Allocator										allocator_type;
 		typedef	value_type										&reference;
 		typedef	const value_type								&const_reference;
-		typename typedef Allocator::pointer						pointer; 
-		typename typedef Allocator::const_pointer				const_pointer;	 
-		typename typedef ft::reverse_iterator<iterator>			reverse_iterator;
-		typename typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+		typedef typename Allocator::pointer						pointer;
+		typedef typename Allocator::const_pointer				const_pointer;
+
+		// To uncomment after the iterator is done
+
+		// typedef	ft::iterator_traits<iterator>::difference_type	difference_type;
+		// typedef typename ft::reverse_iterator<iterator>			reverse_iterator;
+		// typedef typename ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 	};
 }
