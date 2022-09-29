@@ -1,6 +1,8 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
+#include <limits>
+
 #include "pair.hpp"
 #include "iterator_traits.hpp"
 #include "reverse_iterator.hpp"
@@ -27,7 +29,7 @@ namespace ft
 			typedef typename Alloc::const_pointer						const_pointer;
 			typedef typename tree::iterator								iterator;
 			typedef typename tree::const_iterator						const_iterator;
-			typedef reverse_iterator<iterator>							reverse_iterator;
+			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef	typename iterator_traits<iterator>::difference_type	difference_type;
 
