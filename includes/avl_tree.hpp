@@ -13,6 +13,7 @@ namespace ft
 			typedef avl_node<Key, T, Compare, Allocator>					node;
 			typedef node*													node_ptr;
 			typedef avl_tree_iterator<Key, T, Compare, Allocator>			iterator;
+			typedef avl_tree_const_iterator<Key, T, Compare, Allocator>		const_iterator;
 			typedef Key														key_type;
 			typedef T														value_type;
 			typedef ft::pair<Key, T>										pair_type;
@@ -30,7 +31,9 @@ namespace ft
 			int				diff();
 			void			erase(const key_type& key);
 			iterator		begin();
+			const_iterator	begin() const;
 			iterator		end();
+			const_iterator	end() const;
 			node_ptr		min();
 			node_ptr		max();
 			size_type		size() const;
@@ -40,6 +43,7 @@ namespace ft
 			const_pair_type	&find(const key_type &key);
 			node_ptr		upper(const key_type &key) const;
 			node_ptr		find_node(const key_type &key) const;
+			allocator_type	get_allocator() const;
 
 		private:
 			node_ptr		_root;

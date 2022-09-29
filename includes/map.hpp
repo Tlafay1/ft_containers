@@ -55,41 +55,74 @@ namespace ft
 			map(const map &other);
 			~map();
 
-			map&										operator=(const map& other);
-			allocator_type								get_allocator() const;
-			T&											at(const Key& key);
-			const T&									at(const Key& key) const;
-			T&											operator[](const Key& key);
-			iterator									begin();
-			const_iterator								begin() const;
-			iterator									end();
-			const_iterator								end() const;
-			bool										empty() const;
-			size_type									size() const;
-			size_type									max_size() const;
-			void										clear();
-			std::pair<iterator, bool>					insert(const value_type& value);
-			iterator									insert(iterator hint, const value_type& value);
+			map										&operator=(const map &other);
+			allocator_type							get_allocator() const;
+			T										&at(const Key &key);
+			const T									&at(const Key &key) const;
+			T										&operator[](const Key &key);
+			iterator								begin();
+			const_iterator							begin() const;
+			iterator								end();
+			const_iterator							end() const;
+			reverse_iterator						rbegin();
+			const_reverse_iterator					rbegin() const;
+			reverse_iterator						rend();
+			const_reverse_iterator					rend() const;
+			bool									empty() const;
+			size_type								size() const;
+			size_type								max_size() const;
+			void									clear();
+			pair<iterator, bool>					insert(const value_type &value);
+			iterator								insert(iterator hint, const value_type &value);
 			template <class InputIt>
-			void										insert(InputIt first, InputIt last);
-			iterator									erase(iterator pos);
-			iterator									erase(iterator first, iterator last);
-			size_type									erase(const Key& key);
-			void										swap(map& other);
-			size_type									count(const Key& key) const;
-			iterator									find(const Key& key);
-			std::pair<iterator, iterator>				equal_range(const Key& key);
-			std::pair<const_iterator, const_iterator>	equal_range(const Key& key) const;
-			iterator									lower_bound(const Key& key);
-			const_iterator								lower_bound(const Key& key) const;
-			iterator									upper_bound(const Key& key);
-			const_iterator								upper_bound(const Key& key) const;
-			key_compare									key_comp() const;
-			std::map::value_compare						value_comp() const;
+			void									insert(InputIt first, InputIt last);
+			iterator								erase(iterator pos);
+			iterator								erase(iterator first, iterator last);
+			size_type								erase(const Key &key);
+			void									swap(map &other);
+			size_type								count(const Key &key) const;
+			iterator								find(const Key &key);
+			pair<iterator, iterator>				equal_range(const Key &key);
+			pair<const_iterator, const_iterator>	equal_range(const Key &key) const;
+			iterator								lower_bound(const Key &key);
+			const_iterator							lower_bound(const Key &key) const;
+			iterator								upper_bound(const Key &key);
+			const_iterator							upper_bound(const Key &key) const;
+			key_compare								key_comp() const;
+			map::value_compare						value_comp() const;
 
 		private:
 			tree	_tree;
 	};
+
+template <class Key, class T, class Compare, class Alloc>
+bool	operator==(const map<Key,T,Compare,Alloc>& lhs,
+	const map<Key,T,Compare,Alloc>& rhs);	
+
+template <class Key, class T, class Compare, class Alloc>
+bool	operator!=(const map<Key,T,Compare,Alloc>& lhs,
+	const map<Key,T,Compare,Alloc>& rhs);
+
+template <class Key, class T, class Compare, class Alloc>
+bool	operator<(const map<Key,T,Compare,Alloc>& lhs,
+	const map<Key,T,Compare,Alloc>& rhs);
+
+template <class Key, class T, class Compare, class Alloc>
+bool	operator<=(const map<Key,T,Compare,Alloc>& lhs,
+	const map<Key,T,Compare,Alloc>& rhs);
+
+template <class Key, class T, class Compare, class Alloc>
+bool	operator>(const map<Key,T,Compare,Alloc>& lhs,
+	const map<Key,T,Compare,Alloc>& rhs);
+
+template <class Key, class T, class Compare, class Alloc>
+bool	operator>=(const map<Key,T,Compare,Alloc>& lhs,
+	const map<Key,T,Compare,Alloc>& rhs);
+
+template <class Key, class T, class Compare, class Alloc>
+void	swap(map<Key,T,Compare,Alloc>& lhs,
+           map<Key,T,Compare,Alloc>& rhs);
+
 }
 
 #include "map.tpp"

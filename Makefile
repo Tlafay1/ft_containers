@@ -12,7 +12,8 @@ OBJDIR := $(addprefix obj/, $(OBJS))
 
 INCLUDES := vector.hpp vector.tpp random_access_iterator.hpp iterator_traits.hpp \
 			reverse_iterator.hpp enable_if.hpp equal.hpp is_integral.hpp stack.hpp \
-			stack.tpp map.hpp pair.hpp avl_tree.hpp avl_node.hpp avl_tree.tpp avl_node.tpp
+			stack.tpp map.hpp pair.hpp avl_tree.hpp avl_node.hpp avl_tree.tpp avl_node.tpp \
+			map.tpp
 
 INCDIR := $(addprefix includes/, $(INCLUDES))
 

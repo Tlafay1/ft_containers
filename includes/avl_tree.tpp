@@ -39,14 +39,14 @@ namespace ft
 		return (iterator(_root, min()));
 	}
 
-	// Quand const_iterator sera fait
-
-	// typename AvlTree<Key, T, Compare, Allocator>::const_iterator begin()
-	// {
-	// 	if (!_size)
-	// 		return (end());
-	// 	return (const_iterator(_root, min()));
-	// }
+	template <class Key, class T, class Compare, class Allocator>
+	typename AvlTree<Key, T, Compare, Allocator>::const_iterator
+		AvlTree<Key, T, Compare, Allocator>::begin() const
+	{
+		if (!_size)
+			return (end());
+		return (const_iterator(_root, min()));
+	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename AvlTree<Key, T, Compare, Allocator>::iterator
@@ -55,12 +55,12 @@ namespace ft
 		return (iterator(_root, NULL));
 	}
 
-	// Pareil
-
-	// typename AvlTree<Key, T, Compare, Allocator>::const_iterator end()
-	// {
-	// 	return (const_iterator(_root, NULL));
-	// }
+	template <class Key, class T, class Compare, class Allocator>
+	typename AvlTree<Key, T, Compare, Allocator>::const_iterator
+		AvlTree<Key, T, Compare, Allocator>::end() const
+	{
+		return (const_iterator(_root, NULL));
+	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename AvlTree<Key, T, Compare, Allocator>::node_ptr
@@ -147,4 +147,12 @@ namespace ft
 		node_ptr node = node::find(this->_root, key);
 		return (node);
 	}
+
+	template <class Key, class T, class Compare, class Allocator>
+	typename AvlTree<Key, T, Compare, Allocator>::allocator_type
+		AvlTree<Key, T, Compare, Allocator>::get_allocator() const
+	{
+		return (_alloc);
+	}
+
 }
