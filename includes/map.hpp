@@ -53,7 +53,7 @@ namespace ft
 			explicit map(const Compare &comp, const Alloc& alloc = Alloc());
 			template< class InputIt >
 			map(InputIt first, InputIt last, const Compare& comp = Compare(),
-				const Alloc& alloc = Alloc());
+				const allocator_type& alloc = Alloc());
 			map(const map &other);
 			~map();
 
@@ -78,12 +78,13 @@ namespace ft
 			iterator								insert(iterator hint, const value_type &value);
 			template <class InputIt>
 			void									insert(InputIt first, InputIt last);
-			iterator								erase(iterator pos);
-			iterator								erase(iterator first, iterator last);
+			void									erase(iterator pos);
+			void									erase(iterator first, iterator last);
 			size_type								erase(const Key &key);
 			void									swap(map &other);
 			size_type								count(const Key &key) const;
 			iterator								find(const Key &key);
+			const_iterator							find(const Key &key) const;
 			pair<iterator, iterator>				equal_range(const Key &key);
 			pair<const_iterator, const_iterator>	equal_range(const Key &key) const;
 			iterator								lower_bound(const Key &key);
@@ -91,7 +92,7 @@ namespace ft
 			iterator								upper_bound(const Key &key);
 			const_iterator							upper_bound(const Key &key) const;
 			key_compare								key_comp() const;
-			map::value_compare						value_comp() const;
+			value_compare							value_comp() const;
 
 		private:
 			tree	_tree;
@@ -123,7 +124,7 @@ bool	operator>=(const map<Key,T,Compare,Alloc>& lhs,
 
 template <class Key, class T, class Compare, class Alloc>
 void	swap(map<Key,T,Compare,Alloc>& lhs,
-           map<Key,T,Compare,Alloc>& rhs);
+	map<Key,T,Compare,Alloc>& rhs);
 
 }
 

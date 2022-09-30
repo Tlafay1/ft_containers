@@ -2,6 +2,7 @@
 # define AVL_NODE_HPP
 
 #include <cstddef>
+#include "avl_tree.hpp"
 
 namespace ft
 {
@@ -10,42 +11,44 @@ namespace ft
 	struct avl_node
 	{
 		public:
-			typedef avl_node<Key, T, Compare, Alloc>	node;
-			typedef node*								node_ptr;
-			typedef Alloc								allocator_type;
-			typedef Key									key_type;
-			typedef T									value_type;
-			typedef pair<Key, T>						pair_type;
+			typedef avl_node<Key, T, Compare, Alloc>						node;
+			typedef node*													node_ptr;
+			typedef Alloc													allocator_type;
+			typedef Key														key_type;
+			typedef T														value_type;
+			typedef pair<Key, T>											pair_type;
+			typedef typename allocator_type::template rebind<node>::other	node_allocator;
 
 
-			avl_node(const Alloc &alloc);
-			
-			node_ptr	minValueNode(node_ptr root);
-			node_ptr	rr_rotation(node_ptr root);
-			node_ptr	ll_rotation(node_ptr root);
-			node_ptr	lr_rotation(node_ptr root);
-			node_ptr	rl_rotation(node_ptr root);
-			node_ptr	balance(node_ptr root);
-			node_ptr	balanceTree(node_ptr root);
-			node_ptr	insert(node_ptr root, pair_type value);
-			node_ptr	createNode(pair_type value);
-			node_ptr	deleteNode(node_ptr root, Key key);
-			node_ptr	next(node_ptr node, node_ptr root);
-			node_ptr	prev(node_ptr node, node_ptr root);
-			node_ptr	min(node_ptr node);
-			node_ptr	max(node_ptr node);
-			node_ptr	upper(node_ptr node, key_type key);
-			node_ptr	lower(node_ptr node, key_type key);
-			node_ptr	find(node_ptr node, key_type key);
+			avl_node(pair_type data);
+
+			pair_type&	key_value_pair();
+			static int		height(node_ptr node);
+			static int		diff(node_ptr node);
+			static node_ptr	minValueNode(node_ptr root);
+			static node_ptr	rr_rotation(node_ptr root);
+			static node_ptr	ll_rotation(node_ptr root);
+			static node_ptr	lr_rotation(node_ptr root);
+			static node_ptr	rl_rotation(node_ptr root);
+			static node_ptr	balance(node_ptr root);
+			static node_ptr	balanceTree(node_ptr root);
+			static node_ptr	insert(node_ptr root, pair_type value, node_allocator &alloc);
+			static node_ptr	createNode(pair_type value, node_allocator &alloc);
+			static node_ptr	deleteNode(node_ptr root, Key key);
+			static node_ptr	next(node_ptr node, node_ptr root);
+			static node_ptr	prev(node_ptr node, node_ptr root);
+			static node_ptr	min(node_ptr node);
+			static node_ptr	max(node_ptr node);
+			static node_ptr	upper(node_ptr node, key_type key);
+			static node_ptr	lower(node_ptr node, key_type key);
+			static node_ptr	find(node_ptr node, key_type key);
 
 		private:
-			typedef typename allocator_type::template rebind<node>::other node_allocator;
 
 			pair<Key, T>	_data;
 			int				_height;
 			struct avl_node	*_left;
 			struct avl_node	*_right;
-			allocator_type	_alloc;
 			Compare			_key_compare;
 	};
 
@@ -81,7 +84,8 @@ namespace ft
 			avl_tree_iterator	operator--(int);
 			// bool operator==(const avl_tree_const_iterator<Key,
 			// 		T, Compare, Allocator>& other);
-			node_ptr			base();
+			const node_ptr		base() const;
+			const node_ptr		root() const;
 			avl_tree_iterator	operator+(difference_type n) const;
 			
 
@@ -108,6 +112,7 @@ namespace ft
 
 			avl_tree_const_iterator();
 			avl_tree_const_iterator(const avl_tree_const_iterator& src);
+			avl_tree_const_iterator(const avl_tree_iterator<Key, T, Compare, Allocator>& non_const);
 			avl_tree_const_iterator(node_ptr root, node_ptr current);
 			~avl_tree_const_iterator();
 
@@ -123,6 +128,7 @@ namespace ft
 			// bool operator==(const avl_tree_iterator<Key,
 			// 		T, Compare, Allocator>& other);
 			node_ptr					base();
+			node_ptr					root();
 			avl_tree_const_iterator		operator+(difference_type n) const;
 			
 

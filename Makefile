@@ -4,7 +4,7 @@ NAME := ft_containers
 
 CPPFLAGS := -Wall -Wextra -Werror -std=c++98 -g #-fsanitize=address
 
-SRCS := main.cpp vector_tests.cpp
+SRCS := main.cpp vector_tests.cpp map_tests.cpp pair_tests.cpp
 
 OBJS := ${SRCS:.cpp=.o}
 

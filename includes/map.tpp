@@ -16,7 +16,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	template <class InputIterator>
 	map<Key, T, Compare, Alloc>::map(InputIterator first, InputIterator last,
-		const Compare &comp, const Alloc& alloc):
+		const Compare &comp, const allocator_type &alloc):
 		_tree(tree(alloc))
 	{
 		(void) comp;
@@ -65,7 +65,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	T	&map<Key, T, Compare, Alloc>::operator[](const Key &key)
 	{
-		_tree->insert(make_pair(key, T()));
+		_tree.insert(make_pair(key, T()));
 		return (_tree.find(key).second);
 	}
 
@@ -155,15 +155,16 @@ namespace ft
 		map<Key, T, Compare, Alloc>::insert(const value_type &value)
 	{
 		iterator it = iterator(_tree.root(), _tree.find_node(value.first));
-		return (make_pair(it, _tree.insert(value)));
+		return (ft::make_pair(it, _tree.insert(value)));
 	}
-	
+
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator
 		map<Key, T, Compare, Alloc>::insert(iterator hint, const value_type &value)
 	{
 		(void)hint;
-		return (insert(value).first);
+		iterator it = iterator(_tree.root(), _tree.find_node(value.first));
+		return (ft::make_pair(it, _tree.insert(value)).first);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
@@ -175,10 +176,124 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::iterator
-		map<Key, T, Compare, Alloc>::erase(iterator pos)
+	void	map<Key, T, Compare, Alloc>::erase(iterator pos)
 	{
 		_tree.erase(pos->first);
+	}
+
+
+	template <class Key, class T, class Compare, class Alloc>
+	void	map<Key, T, Compare, Alloc>::erase(iterator first, iterator last)
+	{
+		iterator save;
+		while (first != iterator(_tree.root(), last.base()))
+		{
+			save = first + 1;
+			erase(first);
+			first = iterator(_tree.root(), save.base());
+		}
+
+	}
+	
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::size_type
+		map<Key, T, Compare, Alloc>::erase(const Key &key)
+	{
+		return (_tree.erase(key));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	void	map<Key, T, Compare, Alloc>::swap(map<Key, T, Compare, Alloc> &other)
+	{
+		_tree.swap(other._tree);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::size_type
+		map<Key, T, Compare, Alloc>::count(const Key &key) const
+	{
+		try
+		{
+			_tree.find(key);
+			return (1);
+		}
+
+		catch (const std::exception &e)
+		{
+			return (0);
+		}
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::iterator
+		map<Key, T, Compare, Alloc>::find(const Key &key)
+	{
+		return (iterator(_tree.root(), _tree.find_node(key)));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::const_iterator
+		map<Key, T, Compare, Alloc>::find(const Key &key) const
+	{
+		return (const_iterator(_tree.root(), _tree.find_node(key)));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	pair<typename map<Key, T, Compare, Alloc>::iterator,
+		typename map<Key, T, Compare, Alloc>::iterator>
+		map<Key, T, Compare, Alloc>::equal_range(const Key &key)
+	{
+		return (ft::make_pair(lower_bound(key), upper_bound(key)));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	pair<typename map<Key, T, Compare, Alloc>::const_iterator,
+		typename map<Key, T, Compare, Alloc>::const_iterator>
+		map<Key, T, Compare, Alloc>::equal_range(const Key &key) const
+	{
+		return (ft::make_pair(lower_bound(key), upper_bound(key)));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::iterator
+		map<Key, T, Compare, Alloc>::lower_bound(const Key &key)
+	{
+		return ((find(key) == end()) ? iterator(_tree.root(), _tree.upper(key)) : find(key));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::const_iterator
+		map<Key, T, Compare, Alloc>::lower_bound(const Key &key) const
+	{
+		return ((find(key) == end()) ? const_iterator(_tree.root(), _tree.upper(key)) : find(key));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::iterator
+		map<Key, T, Compare, Alloc>::upper_bound(const Key &key)
+	{
+		return (iterator(_tree.root(), _tree.upper(key)));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::const_iterator
+		map<Key, T, Compare, Alloc>::upper_bound(const Key &key) const
+	{
+		return (const_iterator(_tree.root(), _tree.upper(key)));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::key_compare
+		map<Key, T, Compare, Alloc>::key_comp() const
+	{
+		return (key_compare());
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::value_compare
+		map<Key, T, Compare, Alloc>::value_comp() const
+	{
+		return (value_compare());
 	}
 
 }
