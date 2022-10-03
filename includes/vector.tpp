@@ -14,14 +14,15 @@ namespace ft
 	vector<T, Alloc>::vector(size_type n, const T& value, const Alloc &alloc):
 		_alloc(alloc),
 		_array(pointer()),
-		_size(n),
-		_capacity(n)
+		_size(0),
+		_capacity(0)
 	{
-		_array = _alloc.allocate(n);
-		for (T *it = _array; it != _array + _size; ++it)
-		{
-			_alloc.construct(it, value);
-		}
+		assign(n, value);
+		// _array = _alloc.allocate(n);
+		// for (T *it = _array; it != _array + _size; ++it)
+		// {
+		// 	_alloc.construct(it, value);
+		// }
 	}
 
 	template <typename T, typename Alloc>
@@ -50,6 +51,7 @@ namespace ft
 	vector<T, Alloc>::~vector()
 	{
 		clear();
+		_alloc.deallocate(_array, _capacity);
 	}
 
 	template <typename T, typename Alloc>
@@ -214,7 +216,7 @@ namespace ft
 	}
 
 	template <typename T, typename Alloc>
-	typename vector<T, Alloc>::size_type	vector<T, Alloc>::max_size()
+	typename vector<T, Alloc>::size_type	vector<T, Alloc>::max_size() const
 	{
 		return (std::min(_alloc.max_size(),
 			static_cast<size_type>(std::numeric_limits<difference_type>::max())));
@@ -225,14 +227,15 @@ namespace ft
 	{
 		if (new_cap == 0 || _capacity >= new_cap)
 			return ;
-		if (new_cap > this->max_size())
+		if (new_cap > max_size())
 			throw std::length_error("attempt to create ft::vector with a size exceeding max_size()");
 		pointer	tmp;
-		if (new_cap == 0)
+		if (!new_cap)
 			tmp = pointer();
 		else
 			tmp = _alloc.allocate(new_cap);
-		for (size_type i = 0; i < _size; i++){
+		for (size_type i = 0; i < _size; i++)
+		{
 			_alloc.construct(tmp + i, _array[i]);
 			_alloc.destroy(_array + i);
 		}

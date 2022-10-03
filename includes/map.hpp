@@ -7,15 +7,16 @@
 #include "iterator_traits.hpp"
 #include "reverse_iterator.hpp"
 #include "avl_tree.hpp"
+#include "equal.hpp"
 
 namespace ft
 {
 	template< class Key, class T, class Compare = std::less<Key>,
-		class Alloc = std::allocator< std::pair<const Key, T> > >
+	class Alloc = std::allocator< std::pair<const Key, T> > >
 	class map
 	{
 		private:
-			typedef AvlTree<Key, T, Compare, Alloc> tree;
+			typedef avl_tree<Key, T, Compare, Alloc>					tree;
 		public:
 			typedef Key													key_type;
 			typedef	T													mapped_type;
@@ -99,32 +100,31 @@ namespace ft
 	};
 
 template <class Key, class T, class Compare, class Alloc>
-bool	operator==(const map<Key,T,Compare,Alloc>& lhs,
-	const map<Key,T,Compare,Alloc>& rhs);	
+bool	operator==(const map<Key, T, Compare, Alloc>& lhs,
+	const map<Key, T, Compare, Alloc>& rhs);	
 
 template <class Key, class T, class Compare, class Alloc>
-bool	operator!=(const map<Key,T,Compare,Alloc>& lhs,
-	const map<Key,T,Compare,Alloc>& rhs);
+bool	operator!=(const map<Key, T, Compare, Alloc>& lhs,
+	const map<Key, T, Compare, Alloc>& rhs);
 
 template <class Key, class T, class Compare, class Alloc>
-bool	operator<(const map<Key,T,Compare,Alloc>& lhs,
-	const map<Key,T,Compare,Alloc>& rhs);
+bool	operator<(const map<Key, T, Compare, Alloc>& lhs,
+	const map<Key, T, Compare, Alloc>& rhs);
 
 template <class Key, class T, class Compare, class Alloc>
-bool	operator<=(const map<Key,T,Compare,Alloc>& lhs,
-	const map<Key,T,Compare,Alloc>& rhs);
+bool	operator<=(const map<Key, T, Compare, Alloc>& lhs,
+	const map<Key, T, Compare, Alloc>& rhs);
 
 template <class Key, class T, class Compare, class Alloc>
-bool	operator>(const map<Key,T,Compare,Alloc>& lhs,
-	const map<Key,T,Compare,Alloc>& rhs);
+bool	operator>(const map<Key, T, Compare, Alloc>& lhs,
+	const map<Key, T, Compare, Alloc>& rhs);
 
 template <class Key, class T, class Compare, class Alloc>
-bool	operator>=(const map<Key,T,Compare,Alloc>& lhs,
-	const map<Key,T,Compare,Alloc>& rhs);
+bool	operator>=(const map<Key, T, Compare, Alloc>& lhs,
+	const map<Key, T, Compare, Alloc>& rhs);
 
 template <class Key, class T, class Compare, class Alloc>
-void	swap(map<Key,T,Compare,Alloc>& lhs,
-	map<Key,T,Compare,Alloc>& rhs);
+void	swap(map<Key, T, Compare, Alloc>& lhs, map<Key, T, Compare, Alloc>& rhs);
 
 }
 

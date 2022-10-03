@@ -22,7 +22,7 @@ namespace ft
 
 			avl_node(pair_type data);
 
-			pair_type&	key_value_pair();
+			pair_type&		key_value_pair();
 			static int		height(node_ptr node);
 			static int		diff(node_ptr node);
 			static node_ptr	minValueNode(node_ptr root);

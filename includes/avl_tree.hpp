@@ -7,7 +7,7 @@ namespace ft
 {
 	template < class Key, class T, class Compare = std::less<Key>,
 		class Alloc = std::allocator< ft::pair<const Key, T> > >
-	class AvlTree
+	class avl_tree
 	{
 		public:
 			typedef avl_node<Key, T, Compare, Alloc>						node;
@@ -23,9 +23,9 @@ namespace ft
 			typedef Alloc													allocator_type;
 			typedef typename allocator_type::template rebind<node>::other	node_allocator;
 
-			AvlTree(const allocator_type &alloc = allocator_type());
-			~AvlTree();
-			AvlTree(avl_node<Key, T, Compare, Alloc> *root);
+			avl_tree(const allocator_type &alloc = allocator_type());
+			~avl_tree();
+			avl_tree(avl_node<Key, T, Compare, Alloc> *root);
 			
 			int				erase(const key_type& key);
 			iterator		begin();
@@ -36,7 +36,7 @@ namespace ft
 			const node_ptr	max() const;
 			size_type		size() const;
 			bool			insert(pair_type data);
-			void			swap(AvlTree &other);
+			void			swap(avl_tree &other);
 			void			clear();
 			const_pair_type	&find(const key_type &key) const;
 			node_ptr		upper(const key_type &key) const;

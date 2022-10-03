@@ -312,6 +312,12 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
+	avl_tree_iterator<Key, T, Compare, Alloc>::avl_tree_iterator(node_ptr root, node_ptr current):
+		_root(root),
+		_current(current)
+	{}
+
+	template <class Key, class T, class Compare, class Alloc>
 	avl_tree_iterator<Key, T, Compare, Alloc>::~avl_tree_iterator()
 	{}
 
@@ -421,6 +427,12 @@ namespace ft
 	{
 		*this = src;
 	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	avl_tree_const_iterator<Key, T, Compare, Alloc>::avl_tree_const_iterator(node_ptr root, node_ptr current):
+		_root(root),
+		_current(current)
+	{}
 
 	template <class Key, class T, class Compare, class Alloc>
 	avl_tree_const_iterator<Key, T, Compare, Alloc>

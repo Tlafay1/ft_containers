@@ -100,7 +100,8 @@ namespace ft{
 					return ;
 				this->check_max_length(n);
 				pointer	tmp = this->allocate(n);
-				for (size_type i = 0; i < this->_size; i++){
+				for (size_type i = 0; i < this->_size; i++)
+				{
 					this->_alloct.construct(&tmp[i], this->_data[i]);
 					this->_alloct.destroy(&(this->_data[i]));
 				}

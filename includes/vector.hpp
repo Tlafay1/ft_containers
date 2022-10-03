@@ -33,7 +33,7 @@ namespace ft
 				ft::iterator_traits<iterator>::difference_type		difference_type;
 			typedef std::size_t										size_type;
 
-			explicit vector(const allocator_type &alloc = Alloc());
+			explicit vector(const allocator_type &alloc = allocator_type());
 			explicit vector(size_type n,
 				const value_type &value = value_type(),
 				const Alloc &alloc = Alloc());
@@ -73,7 +73,7 @@ namespace ft
 
 			bool					empty() const;
 			size_type				size() const;
-			size_type				max_size();
+			size_type				max_size() const;
 			void					reserve(size_type new_cap);
 			size_type				capacity() const;
 
@@ -102,6 +102,30 @@ namespace ft
 
 			void	expand(size_type n);
 			void	range_check(std::size_t index);
+
+			void check_max_length(size_type n) const
+			{
+				if (n > this->max_size())
+					throw std::length_error("attempt to create ft::vector with a size exceeding max_size()");
+			}
+
+			pointer allocate(size_type n)
+			{
+				if (n == 0)
+				{
+					return pointer();
+				}
+				pointer tmp = this->_alloc.allocate(n);
+				return tmp;
+			}
+
+			void deallocate(pointer p, size_type n)
+			{
+				if (p != NULL)
+				{
+					_alloc.deallocate(p, n);
+				}
+			}
 	};
 }
 

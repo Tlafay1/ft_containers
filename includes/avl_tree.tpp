@@ -3,25 +3,25 @@
 namespace ft
 {
 	template <class Key, class T, class Compare, class Alloc>
-	AvlTree<Key, T, Compare, Alloc>::AvlTree(const allocator_type &alloc):
+	avl_tree<Key, T, Compare, Alloc>::avl_tree(const allocator_type &alloc):
 		_root(NULL),
 		_alloc(alloc)
 	{}
 
 	template <class Key, class T, class Compare, class Alloc>
-	AvlTree<Key, T, Compare, Alloc>::AvlTree(avl_node<Key, T, Compare, Alloc> *root):
+	avl_tree<Key, T, Compare, Alloc>::avl_tree(avl_node<Key, T, Compare, Alloc> *root):
 		_root(root)
 	{}
 
 	template <class Key, class T, class Compare, class Alloc>
-	AvlTree<Key, T, Compare, Alloc>::~AvlTree()
+	avl_tree<Key, T, Compare, Alloc>::~avl_tree()
 	{
 		this->clear();
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	typename AvlTree<Key, T, Compare, Alloc>::iterator
-		AvlTree<Key, T, Compare, Alloc>::begin()
+	typename avl_tree<Key, T, Compare, Alloc>::iterator
+		avl_tree<Key, T, Compare, Alloc>::begin()
 	{
 		if (!_size)
 			return (end());
@@ -29,8 +29,8 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	typename AvlTree<Key, T, Compare, Alloc>::const_iterator
-		AvlTree<Key, T, Compare, Alloc>::begin() const
+	typename avl_tree<Key, T, Compare, Alloc>::const_iterator
+		avl_tree<Key, T, Compare, Alloc>::begin() const
 	{
 		if (!_size)
 			return (end());
@@ -38,46 +38,46 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	typename AvlTree<Key, T, Compare, Alloc>::iterator
-		AvlTree<Key, T, Compare, Alloc>::end()
+	typename avl_tree<Key, T, Compare, Alloc>::iterator
+		avl_tree<Key, T, Compare, Alloc>::end()
 	{
 		return (iterator(_root, NULL));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	typename AvlTree<Key, T, Compare, Alloc>::const_iterator
-		AvlTree<Key, T, Compare, Alloc>::end() const
+	typename avl_tree<Key, T, Compare, Alloc>::const_iterator
+		avl_tree<Key, T, Compare, Alloc>::end() const
 	{
 		return (const_iterator(_root, NULL));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	const typename AvlTree<Key, T, Compare, Alloc>::node_ptr
-		AvlTree<Key, T, Compare, Alloc>::min() const
+	const typename avl_tree<Key, T, Compare, Alloc>::node_ptr
+		avl_tree<Key, T, Compare, Alloc>::min() const
 	{
 		if (!_root)
-			throw std::out_of_range("Empty AvlTree");
+			throw std::out_of_range("Empty avl_tree");
 		return (node::min(_root));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	const typename AvlTree<Key, T, Compare, Alloc>::node_ptr
-		AvlTree<Key, T, Compare, Alloc>::max() const
+	const typename avl_tree<Key, T, Compare, Alloc>::node_ptr
+		avl_tree<Key, T, Compare, Alloc>::max() const
 	{
 		if (!_root)
-			throw std::out_of_range("Empty AvlTree");
+			throw std::out_of_range("Empty avl_tree");
 		return (node::max(_root));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	typename AvlTree<Key, T, Compare, Alloc>::size_type
-		AvlTree<Key, T, Compare, Alloc>::size() const
+	typename avl_tree<Key, T, Compare, Alloc>::size_type
+		avl_tree<Key, T, Compare, Alloc>::size() const
 	{
 		return (_size);
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
-	bool	AvlTree<Key, T, Compare, Alloc>::insert(pair_type data)
+	bool	avl_tree<Key, T, Compare, Alloc>::insert(pair_type data)
 	{
 		if (node::find(_root, data.first))
 			return (false);
@@ -87,9 +87,9 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	int	AvlTree<Key, T, Compare, Alloc>::erase(const key_type &key)
+	int	avl_tree<Key, T, Compare, Alloc>::erase(const key_type &key)
 	{
-		if (!node::find(_root, key))
+		if (!_root || !node::find(_root, key))
 			return 0;
 		_root = node::deleteNode(_root, key);
 		_size--;
@@ -97,7 +97,7 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	void	AvlTree<Key, T, Compare, Alloc>::swap(AvlTree<Key,T,
+	void	avl_tree<Key, T, Compare, Alloc>::swap(avl_tree<Key,T,
 		Compare, Alloc> &other)
 	{
 		std::swap(_alloc, other._alloc);
@@ -105,7 +105,7 @@ namespace ft
 		std::swap(_size, other._size);
 	}
 	template <class Key, class T, class Compare, class Alloc>
-	void	AvlTree<Key, T, Compare, Alloc>::clear()
+	void	avl_tree<Key, T, Compare, Alloc>::clear()
 	{
 		size_type size = _size;
 		for (size_type i = 0; i < size; ++i)
@@ -114,8 +114,8 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	typename AvlTree<Key, T, Compare, Alloc>::const_pair_type
-		&AvlTree<Key, T, Compare, Alloc>::find(const key_type &key) const
+	typename avl_tree<Key, T, Compare, Alloc>::const_pair_type
+		&avl_tree<Key, T, Compare, Alloc>::find(const key_type &key) const
 	{
 		node_ptr node = node::find(_root, key);
 		if (!node)
@@ -124,30 +124,30 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	typename AvlTree<Key, T, Compare, Alloc>::node_ptr
-		AvlTree<Key, T, Compare, Alloc>::upper(const key_type& key) const
+	typename avl_tree<Key, T, Compare, Alloc>::node_ptr
+		avl_tree<Key, T, Compare, Alloc>::upper(const key_type& key) const
 	{
 		return (node::upper(this->_root, key));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	typename AvlTree<Key, T, Compare, Alloc>::node_ptr
-		AvlTree<Key, T, Compare, Alloc>::find_node(const key_type& key) const
+	typename avl_tree<Key, T, Compare, Alloc>::node_ptr
+		avl_tree<Key, T, Compare, Alloc>::find_node(const key_type& key) const
 	{
 		node_ptr node = node::find(this->_root, key);
 		return (node);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	typename AvlTree<Key, T, Compare, Alloc>::allocator_type
-		AvlTree<Key, T, Compare, Alloc>::get_allocator() const
+	typename avl_tree<Key, T, Compare, Alloc>::allocator_type
+		avl_tree<Key, T, Compare, Alloc>::get_allocator() const
 	{
 		return (_alloc);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	typename AvlTree<Key, T, Compare, Alloc>::node_ptr
-		AvlTree<Key, T, Compare, Alloc>::root() const
+	typename avl_tree<Key, T, Compare, Alloc>::node_ptr
+		avl_tree<Key, T, Compare, Alloc>::root() const
 	{
 		return (_root);
 	}
