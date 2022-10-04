@@ -1,3 +1,4 @@
 *.o
-ft_containers
+ft_containers*
 .DS_Store
+a.out*
