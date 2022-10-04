@@ -6,6 +6,7 @@ namespace N = ft;
 
 void test_map(){
 	{
+		std::cout << "\n\n\t\t\t******** MAP *********\n\n" << std::endl;
 		std::cout << "\ttests constructeurs, empty, operateur [], begin et end\n";
 		std::cout << "\t\tconstructeur par default, empty et operateur [] pour l'assignation\n";
 		N::map<int, char> m1;
@@ -101,7 +102,7 @@ void test_map(){
 			m1.erase(it);
 			std::cout << "contenu de m1 apres erase : \n";
 			for (N::map<int, char>::iterator it2 = m1.begin(); it2 != m1.end(); it2++){
-				std::cout << "m1[" << it2->first << "] = " << it2->second << std::endl;
+				std::cout << "Here m1[" << it2->first << "] = " << it2->second << std::endl;
 			}
 			if (m1.erase(2) == 1)
 				std::cout << "erase fait\n";

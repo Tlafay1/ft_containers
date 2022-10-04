@@ -25,7 +25,7 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	map<Key, T, Compare, Alloc>::map(const map &other)
+	map<Key, T, Compare, Alloc>::map(const map &other): _tree(tree())
 	{
 		*this = other;
 	}
@@ -154,8 +154,9 @@ namespace ft
 	pair<typename map<Key, T, Compare, Alloc>::iterator, bool>
 		map<Key, T, Compare, Alloc>::insert(const value_type &value)
 	{
+		bool result = this->_tree.insert(value); // Well, sometimes just create the f****** variable
 		iterator it = iterator(_tree.root(), _tree.find_node(value.first));
-		return (ft::make_pair(it, _tree.insert(value)));
+		return (ft::make_pair(it, result));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -163,8 +164,8 @@ namespace ft
 		map<Key, T, Compare, Alloc>::insert(iterator hint, const value_type &value)
 	{
 		(void)hint;
-		iterator it = iterator(_tree.root(), _tree.find_node(value.first));
-		return (ft::make_pair(it, _tree.insert(value)).first);
+		_tree.insert(value);
+		return iterator(_tree.root(), _tree.find_node(value.first));
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>

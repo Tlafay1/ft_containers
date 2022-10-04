@@ -5,7 +5,8 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	avl_tree<Key, T, Compare, Alloc>::avl_tree(const allocator_type &alloc):
 		_root(NULL),
-		_alloc(alloc)
+		_alloc(alloc),
+		_size(0)
 	{}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -16,7 +17,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	avl_tree<Key, T, Compare, Alloc>::~avl_tree()
 	{
-		this->clear();
+		clear();
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -90,7 +91,9 @@ namespace ft
 	int	avl_tree<Key, T, Compare, Alloc>::erase(const key_type &key)
 	{
 		if (!_root || !node::find(_root, key))
+		{
 			return 0;
+		}
 		_root = node::deleteNode(_root, key);
 		_size--;
 		return (1);
@@ -107,8 +110,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	void	avl_tree<Key, T, Compare, Alloc>::clear()
 	{
-		size_type size = _size;
-		for (size_type i = 0; i < size; ++i)
+		for (size_type i = 0; i < _size; ++i)
 			erase(_root->key_value_pair().first);
 		_size = 0;
 	}
@@ -127,14 +129,14 @@ namespace ft
 	typename avl_tree<Key, T, Compare, Alloc>::node_ptr
 		avl_tree<Key, T, Compare, Alloc>::upper(const key_type& key) const
 	{
-		return (node::upper(this->_root, key));
+		return (node::upper(_root, key));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	typename avl_tree<Key, T, Compare, Alloc>::node_ptr
 		avl_tree<Key, T, Compare, Alloc>::find_node(const key_type& key) const
 	{
-		node_ptr node = node::find(this->_root, key);
+		node_ptr node = node::find(_root, key);
 		return (node);
 	}
 

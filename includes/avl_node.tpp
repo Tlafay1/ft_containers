@@ -68,6 +68,9 @@ namespace ft
 			root->_left = insert(root->_left, value, alloc);
 		else if (value.first > root->_data.first)
 			root->_right = insert(root->_left, value, alloc);
+		else
+			return (root);
+		balanceTree(root);
 		return (root);
 	}
 
@@ -185,7 +188,7 @@ namespace ft
 		if (!root)
 			return root;
 		root->_height = std::max(height(root->_left),
-			height(root->_right) + 1);
+			height(root->_right)) + 1;
 		balanceTree(root);
 		return (root);
 	}
@@ -203,7 +206,7 @@ namespace ft
 	typename avl_node<Key, T, Compare, Alloc>::node_ptr
 		avl_node<Key, T, Compare, Alloc>::prev(node_ptr node, node_ptr root)
 	{
-		if (node == NULL)
+		if (!node)
 			return max(root);
 		if (node->_left)
 			return max(node->_left);

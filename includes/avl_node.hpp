@@ -19,7 +19,6 @@ namespace ft
 			typedef pair<Key, T>											pair_type;
 			typedef typename allocator_type::template rebind<node>::other	node_allocator;
 
-
 			avl_node(pair_type data);
 
 			pair_type&		key_value_pair();
