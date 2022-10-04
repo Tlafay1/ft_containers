@@ -91,10 +91,8 @@ namespace ft
 	int	avl_tree<Key, T, Compare, Alloc>::erase(const key_type &key)
 	{
 		if (!_root || !node::find(_root, key))
-		{
 			return 0;
-		}
-		_root = node::deleteNode(_root, key);
+		_root = node::erase(_root, key, _alloc);
 		_size--;
 		return (1);
 	}

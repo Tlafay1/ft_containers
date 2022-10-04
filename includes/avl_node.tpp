@@ -5,7 +5,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	avl_node<Key, T, Compare, Alloc>::avl_node(pair_type data):
 		_data(data),
-		_height(0),
+		_height(1),
 		_left(NULL),
 		_right(NULL)
 	{
@@ -39,40 +39,28 @@ namespace ft
 	{
 		node_ptr ret = alloc.allocate(1);
 		alloc.construct(ret, value);
-		ret->_left = NULL;
-		ret->_right = NULL;
 		return (ret);
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
-	typename avl_node<Key, T, Compare, Alloc>::node_ptr
-		avl_node<Key, T, Compare, Alloc>::minValueNode(avl_node<Key, T, Compare, Alloc> *node)
-	{
-		avl_node<Key, T, Compare, Alloc>* current = node;
-		while (current->_left)
-			current = current->_left;
-		return current;
-	}
-
-	template <class Key, class T, class Compare, class Alloc>
-	typename avl_node<Key, T, Compare, Alloc>::node_ptr
-		avl_node<Key, T, Compare, Alloc>::insert(avl_node<Key, T, Compare, Alloc> *root,
-			pair<Key, T> value, node_allocator &alloc)
-	{
-		if (!root)
-		{
-			root = createNode(value, alloc);
-			return (root);
-		}
-		if (value.first < root->_data.first)
-			root->_left = insert(root->_left, value, alloc);
-		else if (value.first > root->_data.first)
-			root->_right = insert(root->_left, value, alloc);
-		else
-			return (root);
-		balanceTree(root);
-		return (root);
-	}
+	// template <class Key, class T, class Compare, class Alloc>
+	// typename avl_node<Key, T, Compare, Alloc>::node_ptr
+	// 	avl_node<Key, T, Compare, Alloc>::insert(avl_node<Key, T, Compare, Alloc> *root,
+	// 		pair<Key, T> value, node_allocator &alloc)
+	// {
+	// 	if (!root)
+	// 	{
+	// 		root = createNode(value, alloc);
+	// 		return (root);
+	// 	}
+	// 	if (value.first < root->_data.first)
+	// 		root->_left = insert(root->_left, value, alloc);
+	// 	else if (value.first > root->_data.first)
+	// 		root->_right = insert(root->_left, value, alloc);
+	// 	else
+	// 		return (root);
+	// 	balanceTree(root);
+	// 	return (root);
+	// }
 
 	template <class Key, class T, class Compare, class Alloc>
 	typename avl_node<Key, T, Compare, Alloc>::node_ptr
@@ -116,82 +104,83 @@ namespace ft
 		return (rr_rotation(root));
 	}
 
-	template <class Key, class T, class Compare, class Alloc>
-	typename avl_node<Key, T, Compare, Alloc>::node_ptr
-		avl_node<Key, T, Compare, Alloc>::balance(avl_node<Key, T, Compare, Alloc> *root)
-	{
-		int	balance_factor = diff(root);
+	// template <class Key, class T, class Compare, class Alloc>
+	// typename avl_node<Key, T, Compare, Alloc>::node_ptr
+	// 	avl_node<Key, T, Compare, Alloc>::balance(avl_node<Key, T, Compare, Alloc> *root)
+	// {
+	// 	int	balance_factor = diff(root);
 
-		if (balance_factor > 1)
-		{
-			if (diff(root->_left) > 0)
-				root = ll_rotation(root);
-			else
-				root = lr_rotation(root);
-		}
-		else if (balance_factor < -1)
-		{
-			if (diff(root->_right) > 0)
-				root = rl_rotation(root);
-			else
-				root = rr_rotation(root);
-		}
-		return (root);
-	}
+	// 	if (balance_factor > 1)
+	// 	{
+	// 		if (diff(root->_left) > 0)
+	// 			root = ll_rotation(root);
+	// 		else
+	// 			root = lr_rotation(root);
+	// 	}
+	// 	else if (balance_factor < -1)
+	// 	{
+	// 		if (diff(root->_right) > 0)
+	// 			root = rl_rotation(root);
+	// 		else
+	// 			root = rr_rotation(root);
+	// 	}
+	// 	return (root);
+	// }
 
-	template <class Key, class T, class Compare, class Alloc>
-	typename avl_node<Key, T, Compare, Alloc>::node_ptr
-		avl_node<Key, T, Compare, Alloc>::balanceTree(avl_node<Key, T, Compare, Alloc> *root)
-	{
-		if (!root)
-			return NULL;
-		root->_left = balanceTree(root->_left);
-		root->_right = balanceTree(root->_right);
-		root = balance(root);
-		return root;
-	}
+	// template <class Key, class T, class Compare, class Alloc>
+	// typename avl_node<Key, T, Compare, Alloc>::node_ptr
+	// 	avl_node<Key, T, Compare, Alloc>::balanceTree(avl_node<Key, T, Compare, Alloc> *root)
+	// {
+	// 	if (!root)
+	// 		return NULL;
+	// 	root->_left = balanceTree(root->_left);
+	// 	root->_right = balanceTree(root->_right);
+	// 	root = balance(root);
+	// 	return root;
+	// }
 
-	template <class Key, class T, class Compare, class Alloc>
-	typename avl_node<Key, T, Compare, Alloc>::node_ptr
-		avl_node<Key, T, Compare, Alloc>::deleteNode(avl_node<Key, T, Compare, Alloc> *root,
-			Key key)
-	{
-		if (!root)
-			return (root);
-		if (key < root->_data.first)
-			root->_left = deleteNode(root->_left, key);
-		else if(key > root->_data.first)
-			root->_right = deleteNode(root->_right, key);
-		else
-		{
-			if (!root->_left || !root->_right)
-			{
-				avl_node<Key, T, Compare, Alloc> *tmp = root->_left
-					? root->_left : root->_right;
-				if (!tmp)
-				{
-					tmp = root;
-					root = NULL;
-				}
-				else
-					*root = *tmp;
-				delete tmp;
-			}
-			else
-			{
-				avl_node<Key, T, Compare, Alloc> *tmp = minValueNode(root->_right);
-				root->_data.first = tmp->_data.first;
-				root->_right = deleteNode(root->_right, tmp->_data.first);
-			}
-		}
+	// template <class Key, class T, class Compare, class Alloc>
+	// typename avl_node<Key, T, Compare, Alloc>::node_ptr
+	// 	avl_node<Key, T, Compare, Alloc>::erase(avl_node<Key, T, Compare, Alloc> *root,
+	// 		Key key, node_allocator &alloc)
+	// {
+	// 	if (!root)
+	// 		return (root);
+	// 	if (key < root->_data.first)
+	// 		root->_left = erase(root->_left, key, alloc);
+	// 	else if(key > root->_data.first)
+	// 		root->_right = erase(root->_right, key, alloc);
+	// 	else
+	// 	{
+	// 		if (!root->_left || !root->_right)
+	// 		{
+	// 			avl_node<Key, T, Compare, Alloc> *tmp = root->_left
+	// 				? root->_left : root->_right;
+	// 			if (!tmp)
+	// 			{
+	// 				tmp = root;
+	// 				root = NULL;
+	// 			}
+	// 			else
+	// 				*root = *tmp;
+	// 			alloc.destroy(tmp);
+	// 			alloc.deallocate(tmp, 1);
+	// 		}
+	// 		else
+	// 		{
+	// 			avl_node<Key, T, Compare, Alloc> *tmp = min(root->_right);
+	// 			root->_data.first = tmp->_data.first;
+	// 			root->_right = erase(root->_right, tmp->_data.first, alloc);
+	// 		}
+	// 	}
 
-		if (!root)
-			return root;
-		root->_height = std::max(height(root->_left),
-			height(root->_right)) + 1;
-		balanceTree(root);
-		return (root);
-	}
+	// 	if (!root)
+	// 		return root;
+	// 	root->_height = std::max(height(root->_left),
+	// 		height(root->_right)) + 1;
+	// 	root = balanceTree(root);
+	// 	return (root);
+	// }
 
 	template <class Key, class T, class Compare, class Alloc>
 	typename avl_node<Key, T, Compare, Alloc>::node_ptr
