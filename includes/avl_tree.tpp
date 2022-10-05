@@ -90,7 +90,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	int	avl_tree<Key, T, Compare, Alloc>::erase(const key_type &key)
 	{
-		if (!_root || !node::find(_root, key))
+		if (!node::find(_root, key))
 			return 0;
 		_root = node::erase(_root, key, _alloc);
 		_size--;
@@ -108,9 +108,8 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	void	avl_tree<Key, T, Compare, Alloc>::clear()
 	{
-		for (size_type i = 0; i < _size; ++i)
+		while (_size > 0)
 			erase(_root->key_value_pair().first);
-		_size = 0;
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -150,6 +149,15 @@ namespace ft
 		avl_tree<Key, T, Compare, Alloc>::root() const
 	{
 		return (_root);
+	}
+
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename avl_tree<Key, T, Compare, Alloc>::size_type
+		avl_tree<Key, T, Compare, Alloc>::max_size() const
+	{
+		return std::min(_alloc.max_size(),
+			static_cast<size_type>(std::numeric_limits<difference_type>::max()));
 	}
 
 }

@@ -16,6 +16,8 @@ void test_map(){
 		m1[2] = 'b';
 		m1[3] = 'c';
 		m1[4] = 'd';
+		// m1[5] = 'e';
+		// m1[6] = 'f';
 		if (m1.empty() == false)
 			std::cout << "m1 n'est plus vide\n";
 
@@ -277,16 +279,16 @@ void test_map(){
 		}
 	}
 
-	// {
-	// 	std::cout << "\ttest de get_allocator\n";
-	// 	int psize;
-	// 	N::map<int,char> m8;
-	// 	N::pair<const int,char>* p;
-	// 	p=m8.get_allocator().allocate(5);
-	// 	psize = sizeof(std::map<char,int>::value_type)*5;
-	// 	std::cout << "on a reussi une allocation de taille " << psize << " bytes.\n";
-	// 	m8.get_allocator().deallocate(p,5);
-	// }
+	{
+		std::cout << "\ttest de get_allocator\n";
+		int psize;
+		N::map<int,char> m8;
+		N::pair<const int,char>* p;
+		p=m8.get_allocator().allocate(5);
+		psize = sizeof(std::map<char,int>::value_type)*5;
+		std::cout << "on a reussi une allocation de taille " << psize << " bytes.\n";
+		m8.get_allocator().deallocate(p,5);
+	}
 
 	{
 		std::cout << "\ttests des comparatifs == , !=, <, <=, > et >=\n";

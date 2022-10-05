@@ -2,7 +2,7 @@
 #include <vector>
 #include <iostream>
 
-namespace N = ft;
+namespace N = std;
 
 void	display_int(N::vector<int> v){
 				for (N::vector<int>::iterator it = v.begin(); it < v.end(); it++){

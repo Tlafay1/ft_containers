@@ -43,6 +43,7 @@ namespace ft
 			node_ptr		find_node(const key_type &key) const;
 			allocator_type	get_allocator() const;
 			node_ptr		root() const;
+			size_type 		max_size() const;
 
 		private:
 			node_ptr		_root;

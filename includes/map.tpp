@@ -65,7 +65,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	T	&map<Key, T, Compare, Alloc>::operator[](const Key &key)
 	{
-		_tree.insert(make_pair(key, T()));
+		_tree.insert(ft::make_pair(key, T()));
 		return (_tree.find(key).second);
 	}
 
@@ -140,8 +140,7 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::size_type
 		map<Key, T, Compare, Alloc>::max_size() const
 	{
-		return (std::min(_tree.get_allocator().max_size(),
-			static_cast<size_type>(std::numeric_limits<difference_type>::max())));
+		return (_tree.max_size());
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -307,7 +306,7 @@ namespace ft
 	bool	operator==(const map<Key, T, Compare, Alloc>& lhs,
 		const map<Key, T, Compare, Alloc>& rhs)
 	{
-		if (lhs.size() != lhs.size())
+		if (lhs.size() != rhs.size())
 			return (false);
 		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
